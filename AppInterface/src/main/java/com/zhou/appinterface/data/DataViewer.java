@@ -11,7 +11,7 @@ public interface DataViewer<T> {
      *
      * @param t 数据
      */
-    void initData(T t);
+    void setUpData(T t);
 
     /**
      * 刷新数据
@@ -19,12 +19,15 @@ public interface DataViewer<T> {
     void refresh();
 
     /**
-     * 数据加载失败时
+     * 获取状态
+     * @return 当前状态
      */
-    void failure();
+    State getState();
 
-    /**
-     * 加载中
-     */
-    void loading();
+    enum State {
+        loading,// 加载中
+        failure,// 加载失败
+        empty,// 空数据
+        success //加载成功
+    }
 }

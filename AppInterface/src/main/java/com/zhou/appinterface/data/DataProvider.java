@@ -58,4 +58,12 @@ public interface DataProvider<T> {
      * @return boolean
      */
     boolean needCache();
+
+    /**
+     * 获取该加载器的唯一标识
+     *
+     * @return key
+     */
+    @NonNull
+    String key();
 }

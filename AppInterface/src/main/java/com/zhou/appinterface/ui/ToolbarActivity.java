@@ -22,7 +22,7 @@ public class ToolbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.interface_activity_toolbar);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.interface_activity_toolbar);
         setSupportActionBar(toolbar);
     }
 
