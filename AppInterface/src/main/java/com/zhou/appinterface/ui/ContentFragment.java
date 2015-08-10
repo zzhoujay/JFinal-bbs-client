@@ -5,11 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.zhou.appinterface.R;
@@ -18,39 +19,35 @@ import com.zhou.appinterface.data.DataProvider;
 import com.zhou.appinterface.data.DataViewer;
 import com.zhou.appinterface.model.Model;
 
-import java.util.List;
-
 /**
- * Created by zzhoujay on 2015/8/9 0009.
- * 使用RecyclerView展示数据的Fragment
+ * Created by zzhoujay on 2015/8/11 0011.
  */
-public class RecyclerViewFragment<T extends Model> extends Fragment implements DataViewer<List<T>> {
+public class ContentFragment<T extends Model> extends Fragment implements DataViewer<T> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
+    private ScrollView scrollView;
     private LinearLayout failure, empty;
     private TextView failureText, emptyText;
-    private DataProvider<List<T>> provider;
     private State state;
-
+    private DataProvider<T> provider;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.interface_fragment_recycler_view, container, false);
-        initView(view);
-        afterInitView();
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.interface_fragment_content, container, false);
+        initView(v);
+        afterInitView(inflater);
         requestSetup();
-        return view;
+        return v;
     }
 
-    private void initView(View view) {
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.interface_swipeRefreshLayout);
-        recyclerView = (RecyclerView) view.findViewById(R.id.interface_recyclerView);
-        failure = (LinearLayout) view.findViewById(R.id.interface_fragment_failure);
-        empty = (LinearLayout) view.findViewById(R.id.interface_fragment_empty);
-        failureText = (TextView) view.findViewById(R.id.interface_fragment_failure_text);
-        emptyText = (TextView) view.findViewById(R.id.interface_fragment_nodata_text);
+    protected void initView(View v) {
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.interface_swipeRefreshLayout);
+        failure = (LinearLayout) v.findViewById(R.id.interface_fragment_failure);
+        empty = (LinearLayout) v.findViewById(R.id.interface_fragment_empty);
+        failureText = (TextView) v.findViewById(R.id.interface_fragment_failure_text);
+        emptyText = (TextView) v.findViewById(R.id.interface_fragment_nodata_text);
+        scrollView = (ScrollView) v.findViewById(R.id.interface_scrollview);
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -60,7 +57,11 @@ public class RecyclerViewFragment<T extends Model> extends Fragment implements D
         swipeRefreshLayout.setOnRefreshListener(this::requestRefresh);
     }
 
-    protected void initData(@NonNull List<T> ts) {
+    protected void afterInitView(LayoutInflater inflater) {
+
+    }
+
+    protected void initData(@NonNull T t) {
 
     }
 
@@ -76,14 +77,10 @@ public class RecyclerViewFragment<T extends Model> extends Fragment implements D
     protected void requestSetup() {
         if (provider != null) {
             onLoading();
-            DataManager.getInstance().get(provider, (this::setupData));
+            DataManager.getInstance().get(provider, this::setupData);
         } else {
             onEmpty();
         }
-    }
-
-    protected void afterInitView() {
-
     }
 
     public void onEmpty() {
@@ -116,34 +113,9 @@ public class RecyclerViewFragment<T extends Model> extends Fragment implements D
         state = State.success;
     }
 
-    public void setEmptyText(String text) {
-        emptyText.setText(text);
-    }
-
-    public void setFailureText(String text) {
-        failureText.setText(text);
-    }
-
-
-
-    public void setRefreshing(boolean refreshing) {
-        swipeRefreshLayout.setRefreshing(refreshing);
-    }
-
-    public void setLayoutManager(RecyclerView.LayoutManager manager) {
-        recyclerView.setLayoutManager(manager);
-    }
-
-    public void setAdapter(RecyclerView.Adapter adapter) {
-        recyclerView.setAdapter(adapter);
-    }
-
-    public void setProvider(DataProvider<List<T>> provider) {
-        this.provider = provider;
-    }
 
     @Override
-    public void setupData(List<T> t) {
+    public void setupData(@Nullable T t) {
         if (t == null) {
             onFailure();
         } else if (t.isEmpty()) {
@@ -156,11 +128,22 @@ public class RecyclerViewFragment<T extends Model> extends Fragment implements D
 
     @Override
     public void refresh() {
+        onLoading();
         requestRefresh();
     }
 
     @Override
     public State getState() {
         return state;
+    }
+
+    public void setContent(View view) {
+        scrollView.removeAllViews();
+        ScrollView.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        scrollView.addView(view,params);
+    }
+
+    public void setProvider(DataProvider<T> provider) {
+        this.provider = provider;
     }
 }

@@ -1,5 +1,7 @@
 package com.zhou.appinterface.data;
 
+import android.support.annotation.Nullable;
+
 /**
  * Created by zzhoujay on 2015/8/9 0009.
  * 数据展示器
@@ -11,7 +13,7 @@ public interface DataViewer<T> {
      *
      * @param t 数据
      */
-    void setUpData(T t);
+    void setupData(@Nullable T t);
 
     /**
      * 刷新数据
