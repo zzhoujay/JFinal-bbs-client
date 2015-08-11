@@ -17,12 +17,12 @@ import com.zhou.appinterface.R;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.data.DataProvider;
 import com.zhou.appinterface.data.DataViewer;
-import com.zhou.appinterface.model.Model;
+import com.zhou.appinterface.model.InterfaceModel;
 
 /**
  * Created by zzhoujay on 2015/8/11 0011.
  */
-public class ContentFragment<T extends Model> extends Fragment implements DataViewer<T> {
+public class ContentFragment<T extends InterfaceModel> extends Fragment implements DataViewer<T> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ScrollView scrollView;

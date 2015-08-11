@@ -4,16 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.zhou.appinterface.model.InterfaceModel;
 
 import java.io.Serializable;
 
 /**
  * Created by zzhoujay on 2015/7/26 0026.
  */
-public class Section implements Serializable, Parcelable {
+public class Section extends InterfaceModel implements  Parcelable {
 
     public int id;
-    @SerializedName("display_name")
+    @SerializedName("display_index")
     public int index;
     public String tab;
     public String name;

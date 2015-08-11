@@ -1,6 +1,8 @@
 package com.zhou.appinterface.net;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -32,8 +34,10 @@ public class NetworkManager {
 
     private OkHttpClient client;
     private Gson gson;
+    private Context context;
 
     private NetworkManager(Context context) {
+        this.context = context;
         client = new OkHttpClient();
         client.setWriteTimeout(3, TimeUnit.SECONDS);
         client.setReadTimeout(3, TimeUnit.SECONDS);
@@ -43,14 +47,15 @@ public class NetworkManager {
         gson = new Gson();
     }
 
-    public void request(Request request, @NonNull LoadCallback<Result> loadCallback) {
-        new AsyncTask<Request, Void, Result>() {
+    @SuppressWarnings("unchecked")
+    public <T extends InterfaceResult> void request(Request request, @NonNull LoadCallback<T> loadCallback) {
+        new AsyncTask<Request, Void, InterfaceResult>() {
 
             @Override
-            protected Result doInBackground(Request... params) {
+            protected InterfaceResult doInBackground(Request... params) {
                 try {
                     String body = client.newCall(params[0]).execute().body().string();
-                    return gson.fromJson(body, Result.class);
+                    return gson.fromJson(body, InterfaceResult.class);
                 } catch (Exception e) {
                     Log.d("request", "error", e);
                 }
@@ -58,11 +63,24 @@ public class NetworkManager {
             }
 
             @Override
-            protected void onPostExecute(Result result) {
-                super.onPostExecute(result);
-                loadCallback.loadComplete(result);
+            @SuppressWarnings("unchecked")
+            protected void onPostExecute(InterfaceResult result) {
+                T t = null;
+                try {
+                    t = (T) result;
+                } catch (Exception e) {
+                    Log.d("request", "cast error", e);
+                }
+                loadCallback.loadComplete(t);
             }
         }.execute(request);
     }
+
+    public boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isAvailable();
+    }
+
 
 }

@@ -4,14 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.zhou.appinterface.model.InterfaceModel;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zzhoujay on 2015/7/26 0026.
  */
-public class Notification implements Serializable, Parcelable {
+public class Notification extends InterfaceModel implements Parcelable {
 
     public int id;
     public int read;

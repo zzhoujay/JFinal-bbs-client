@@ -13,7 +13,6 @@ public class MainActivity extends ToolbarActivity {
 
         quickFinish();
         getToolbar().setBackgroundColor(getResources().getColor(R.color.material_lightBlue_500));
-        setContent(new TestFragment());
 
     }
 

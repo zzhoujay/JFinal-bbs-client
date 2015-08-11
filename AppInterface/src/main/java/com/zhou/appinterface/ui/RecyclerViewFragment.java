@@ -16,7 +16,7 @@ import com.zhou.appinterface.R;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.data.DataProvider;
 import com.zhou.appinterface.data.DataViewer;
-import com.zhou.appinterface.model.Model;
+import com.zhou.appinterface.model.InterfaceModel;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import java.util.List;
  * Created by zzhoujay on 2015/8/9 0009.
  * 使用RecyclerView展示数据的Fragment
  */
-public class RecyclerViewFragment<T extends Model> extends Fragment implements DataViewer<List<T>> {
+public class RecyclerViewFragment<T extends InterfaceModel> extends Fragment implements DataViewer<List<T>> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
