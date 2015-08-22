@@ -6,12 +6,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.zhou.appinterface.model.InterfaceModel;
 
-import java.io.Serializable;
-
 /**
  * Created by zzhoujay on 2015/7/26 0026.
+ * 模块
  */
-public class Section extends InterfaceModel implements  Parcelable {
+public class Section extends InterfaceModel implements Parcelable {
 
     public int id;
     @SerializedName("display_index")
@@ -55,4 +54,15 @@ public class Section extends InterfaceModel implements  Parcelable {
             return new Section[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Section{" +
+                "id=" + id +
+                ", index=" + index +
+                ", tab='" + tab + '\'' +
+                ", name='" + name + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }

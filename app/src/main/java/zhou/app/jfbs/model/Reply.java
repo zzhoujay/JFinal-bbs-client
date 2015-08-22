@@ -6,11 +6,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.zhou.appinterface.model.InterfaceModel;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zzhoujay on 2015/7/26 0026.
+ * 回复
  */
 public class Reply extends InterfaceModel implements  Parcelable {
 
@@ -77,4 +77,20 @@ public class Reply extends InterfaceModel implements  Parcelable {
             return new Reply[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Reply{" +
+                "id='" + id + '\'' +
+                ", content='" + content + '\'' +
+                ", quoteContent='" + quoteContent + '\'' +
+                ", inTime=" + inTime +
+                ", tId='" + tId + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", quoteAuthorNickName='" + quoteAuthorNickName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", quote='" + quote + '\'' +
+                ", authorId='" + authorId + '\'' +
+                '}';
+    }
 }

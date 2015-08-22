@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * Created by zzhoujay on 2015/7/26 0026.
+ * 通知
  */
 public class Notification extends InterfaceModel implements Parcelable {
 
@@ -76,4 +77,20 @@ public class Notification extends InterfaceModel implements Parcelable {
             return new Notification[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id=" + id +
+                ", read=" + read +
+                ", inTime=" + inTime +
+                ", fromAuthorId='" + fromAuthorId + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", massage='" + massage + '\'' +
+                ", authorId='" + authorId + '\'' +
+                ", rId='" + rId + '\'' +
+                ", title='" + title + '\'' +
+                ", tId='" + tId + '\'' +
+                '}';
+    }
 }

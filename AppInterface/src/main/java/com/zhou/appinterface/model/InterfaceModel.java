@@ -1,9 +1,5 @@
 package com.zhou.appinterface.model;
 
-import android.support.annotation.Nullable;
-
-import com.zhou.appinterface.net.InterfaceResult;
-
 import java.io.Serializable;
 
 /**
@@ -12,9 +8,6 @@ import java.io.Serializable;
 public class InterfaceModel implements Serializable {
 
     public static final InterfaceModel EMPTY = new InterfaceModel();
-
-    @Nullable
-    public transient InterfaceResult result;
 
     public boolean isEmpty() {
         return EMPTY.equals(this);

@@ -6,11 +6,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.zhou.appinterface.model.InterfaceModel;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zzhoujay on 2015/7/26 0026.
+ * 话题
  */
 public class Topic extends InterfaceModel implements Parcelable {
 
@@ -34,8 +34,7 @@ public class Topic extends InterfaceModel implements Parcelable {
     public String originalUrl;
     @SerializedName("reply_count")
     public int replyCount;
-    @SerializedName("nikename")
-    public String nikeName;
+    public String nickname;
     public int score;
     public String tab;
     @SerializedName("section_name")
@@ -65,7 +64,7 @@ public class Topic extends InterfaceModel implements Parcelable {
         dest.writeLong(inTime != null ? inTime.getTime() : -1);
         dest.writeString(this.originalUrl);
         dest.writeInt(this.replyCount);
-        dest.writeString(this.nikeName);
+        dest.writeString(this.nickname);
         dest.writeInt(this.score);
         dest.writeString(this.tab);
         dest.writeString(this.sectionName);
@@ -93,7 +92,7 @@ public class Topic extends InterfaceModel implements Parcelable {
         this.inTime = tmpInTime == -1 ? null : new Date(tmpInTime);
         this.originalUrl = in.readString();
         this.replyCount = in.readInt();
-        this.nikeName = in.readString();
+        this.nickname = in.readString();
         this.score = in.readInt();
         this.tab = in.readString();
         this.sectionName = in.readString();
@@ -111,4 +110,30 @@ public class Topic extends InterfaceModel implements Parcelable {
             return new Topic[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", sId=" + sId +
+                ", authorId='" + authorId + '\'' +
+                ", view=" + view +
+                ", modifyTime=" + modifyTime +
+                ", signature='" + signature + '\'' +
+                ", top=" + top +
+                ", status=" + status +
+                ", inTime=" + inTime +
+                ", originalUrl='" + originalUrl + '\'' +
+                ", replyCount=" + replyCount +
+                ", nickname='" + nickname + '\'' +
+                ", score=" + score +
+                ", tab='" + tab + '\'' +
+                ", sectionName='" + sectionName + '\'' +
+                ", good=" + good +
+                ", avatar='" + avatar + '\'' +
+                ", reposted=" + reposted +
+                '}';
+    }
 }

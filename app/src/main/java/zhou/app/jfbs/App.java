@@ -2,6 +2,8 @@ package zhou.app.jfbs;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zhou.appinterface.net.NetworkManager;
 
 /**
@@ -29,7 +31,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
-        NetworkManager.init(this);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        NetworkManager.init(this, gson);
     }
 
     public static App getInstance() {

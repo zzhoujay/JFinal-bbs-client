@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * Created by zzhoujay on 2015/7/26 0026.
+ * 用户
  */
 public class User extends InterfaceModel implements  Parcelable {
 
@@ -93,4 +94,25 @@ public class User extends InterfaceModel implements  Parcelable {
             return new User[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", originalUrl='" + originalUrl + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", tab='" + tab + '\'' +
+                ", openId='" + openId + '\'' +
+                ", inTime=" + inTime +
+                ", thirdloginType='" + thirdloginType + '\'' +
+                ", score=" + score +
+                ", expireTime=" + expireTime +
+                ", url='" + url + '\'' +
+                ", token='" + token + '\'' +
+                ", mission='" + mission + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                ", signature='" + signature + '\'' +
+                '}';
+    }
 }
