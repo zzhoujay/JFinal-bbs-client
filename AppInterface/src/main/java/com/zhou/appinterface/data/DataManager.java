@@ -107,59 +107,75 @@ public class DataManager {
         if (provider.hasLoad()) {
             loadCallback.loadComplete(provider.get());
         } else {
-            provider.loadFromLocal((t) -> {
+            provider.loadByCache((t) -> {
                 if (t != null) {
-                    provider.set(t);
+                    provider.set(t,false);
                     if (provider.needCache()) {
                         provider.persistence();
                     }
                     loadCallback.loadComplete(provider.get());
                 } else {
-                    provider.loadFromNetwork((tn) -> {
-                        provider.set(tn);
+                    provider.load((tn) -> {
+                        provider.set(tn,false);
                         if (provider.needCache()) {
                             provider.persistence();
                         }
                         loadCallback.loadComplete(provider.get());
-                    });
+                    },false);
                 }
             });
         }
     }
 
     /**
-     * 更新数据
+     * 加载数据
      *
      * @param key          key
      * @param loadCallback 回调
      * @param <T>          type
      */
     @SuppressWarnings("unchecked")
-    public <T> void update(String key, @NonNull LoadCallback<T> loadCallback) {
+    public <T> void load(String key, @NonNull LoadCallback<T> loadCallback, boolean more) {
         try {
             DataProvider<T> provider = (DataProvider<T>) providers.get(key);
-            update(provider, loadCallback);
+            load(provider, loadCallback, more);
         } catch (Exception e) {
-            Log.d("update", "DataManager", e);
+            Log.d("load", "DataManager", e);
             loadCallback.loadComplete(null);
         }
     }
 
     /**
-     * 更新数据
+     * 加载数据
      *
      * @param provider     数据提供器
      * @param loadCallback 回调
      * @param <T>          type
      */
-    public <T> void update(DataProvider<T> provider, @NonNull LoadCallback<T> loadCallback) {
-        provider.loadFromNetwork((t) -> {
-            provider.set(t);
+    public <T> void load(DataProvider<T> provider, @NonNull LoadCallback<T> loadCallback, boolean more) {
+        provider.load((t) -> {
+            provider.set(t,more);
             if (provider.needCache()) {
                 provider.persistence();
             }
             loadCallback.loadComplete(provider.get());
-        });
+        }, more);
+    }
+
+    public <T> void update(DataProvider<T> provider, @NonNull LoadCallback<T> loadCallback) {
+        load(provider, loadCallback, false);
+    }
+
+    public <T> void update(String key, @NonNull LoadCallback<T> loadCallback) {
+        load(key, loadCallback, false);
+    }
+
+    public <T> void more(DataProvider<T> provider, @NonNull LoadCallback<T> loadCallback) {
+        load(provider, loadCallback, true);
+    }
+
+    public <T> void more(String key, @NonNull LoadCallback<T> loadCallback) {
+        load(key, loadCallback, true);
     }
 
     /**
@@ -171,6 +187,20 @@ public class DataManager {
             if (dataProvider.needCache()) {
                 dataProvider.persistence();
             }
+        }
+    }
+
+    public void clearAllCache() {
+        for (Map.Entry<String, DataProvider> entry : providers.entrySet()) {
+            DataProvider provider = entry.getValue();
+            provider.clearCache();
+        }
+    }
+
+    public void clearCache(String key) {
+        DataProvider provider = providers.get(key);
+        if (provider != null) {
+            provider.clearCache();
         }
     }
 

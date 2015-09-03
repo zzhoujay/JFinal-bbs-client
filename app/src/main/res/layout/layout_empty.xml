@@ -16,7 +16,7 @@
         android:src="@drawable/ic_iconfont_shibai" />
 
     <TextView
-        android:id="@+id/interface_fragment_nodata_text"
+        android:id="@+id/fragment_nodata_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

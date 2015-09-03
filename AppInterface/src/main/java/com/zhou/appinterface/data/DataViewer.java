@@ -21,7 +21,13 @@ public interface DataViewer<T> {
     void refresh();
 
     /**
+     * 加载更多
+     */
+    void loadMore();
+
+    /**
      * 获取状态
+     *
      * @return 当前状态
      */
     State getState();

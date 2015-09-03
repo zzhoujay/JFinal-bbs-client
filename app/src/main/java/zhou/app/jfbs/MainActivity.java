@@ -1,29 +1,21 @@
 package zhou.app.jfbs;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Toast;
 
-import com.zhou.appinterface.ui.ToolbarActivity;
-import com.zhou.appinterface.util.LogKit;
+import zhou.app.jfbs.ui.activity.QrCodeActivity;
 
-import java.util.List;
-
-import zhou.app.jfbs.model.Section;
-import zhou.app.jfbs.model.TopicPage;
-import zhou.app.jfbs.model.TopicWithReply;
-import zhou.app.jfbs.model.User;
-import zhou.app.jfbs.model.UserResult;
-import zhou.app.jfbs.util.NetworkKit;
-
-public class MainActivity extends ToolbarActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        quickFinish();
-        getToolbar().setBackgroundColor(getResources().getColor(R.color.material_lightBlue_500));
+        setContentView(R.layout.activity_main);
 
 
         /*NetworkKit.sections(result -> {
@@ -41,11 +33,29 @@ public class MainActivity extends ToolbarActivity {
             LogKit.d("topicWithReply", topicWithReply);
         });*/
 
-        NetworkKit.userInfo("f9fc3ec0c8a145b1ad7ca28563fea066", result -> {
+        /*NetworkKit.userInfo("f9fc3ec0c8a145b1ad7ca28563fea066", result -> {
             UserResult user = result.detail;
             LogKit.d("user", user);
         });
 
+        startActivity(new Intent(this, QrCodeActivity.class));*/
+
     }
 
+    public void qrCode(View view) {
+        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 12 && resultCode == RESULT_OK) {
+            String result = data.getStringExtra(QrCodeActivity.RESULT);
+            String[] rs = result.split("@||@");
+            if (rs.length == 2) {
+
+            } else {
+                Toast.makeText(this, R.string.error_qr_code, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

@@ -29,21 +29,21 @@ public interface DataProvider<T> {
      *
      * @param t 数据
      */
-    void set(@Nullable T t);
+    void set(@Nullable T t,boolean more);
 
     /**
-     * 从本地缓存加载数据（应异步实现）
+     * 从缓存中加载数据（应异步实现）
      *
      * @param loadCallback 回调
      */
-    void loadFromLocal(@NonNull LoadCallback<T> loadCallback);
+    void loadByCache(@NonNull LoadCallback<T> loadCallback);
 
     /**
-     * 从网络中加载数据（必须异步实现）
+     * 加载数据（必须异步实现）
      *
      * @param loadCallback 回调
      */
-    void loadFromNetwork(@NonNull LoadCallback<T> loadCallback);
+    void load(@NonNull LoadCallback<T> loadCallback, boolean more);
 
     /**
      * 是否已经加载
@@ -58,6 +58,11 @@ public interface DataProvider<T> {
      * @return boolean
      */
     boolean needCache();
+
+    /**
+     * 清空缓存
+     */
+    boolean clearCache();
 
     /**
      * 获取该加载器的唯一标识

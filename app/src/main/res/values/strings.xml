@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="error_qr_code">二维码格式错误</string>
+    <string name="home_page">首页</string>
+    <string name="error_network">网络连接不可用</string>
 </resources>

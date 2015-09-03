@@ -99,5 +99,4 @@ public class NetworkManager {
         return networkInfo != null && networkInfo.isAvailable();
     }
 
-
 }

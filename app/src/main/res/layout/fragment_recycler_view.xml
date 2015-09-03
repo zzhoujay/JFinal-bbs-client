@@ -4,21 +4,21 @@
     android:layout_height="match_parent">
 
 
-    <include layout="@layout/interface_layout_failure" />
+    <include layout="@layout/layout_failure" />
 
     <!--<include layout="@layout/interface_layout_loading" />-->
 
-    <include layout="@layout/interface_layout_empty" />
+    <include layout="@layout/layout_empty" />
 
     <com.zhou.appinterface.ui.SwipeToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/interface_swipeRefreshLayout"
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/interface_recyclerView"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -1,6 +1,7 @@
 package zhou.app.jfbs.util;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -49,9 +50,9 @@ public class NetworkKit {
      * @param size         每一页的主题数量
      * @param loadCallback 回调
      */
-    public static void index(int p, String tab, int size, @NonNull LoadCallback<Result<TopicPage>> loadCallback) {
+    public static void index(int p, @Nullable String tab, int size, @NonNull LoadCallback<Result<TopicPage>> loadCallback) {
         Request request = new Request.Builder()
-                .url(App.INDEX_URL + "?p=" + p + "&tab=" + tab + "&size=" + size).get().build();
+                .url(App.INDEX_URL + "?p=" + p + (tab == null ? "" : "&tab=" + tab) + "&size=" + size).get().build();
         NetworkManager.getInstance().request(request, loadCallback, new TypeToken<Result<TopicPage>>() {
         }.getType());
     }

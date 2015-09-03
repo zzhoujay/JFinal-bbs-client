@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 
 /**
  * Created by zzhoujay on 2015/8/10 0010.
+ * 继承至SwipeRefreshLayout，修复了setRefreshing(true)时不显示的BUG
  */
 public class SwipeToRefreshLayout extends SwipeRefreshLayout {
 
