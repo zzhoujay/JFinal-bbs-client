@@ -1,6 +1,5 @@
 package zhou.app.jfbs.data;
 
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -72,25 +71,15 @@ public class TopicsProvider implements DataProvider<List<Topic>> {
     @SuppressWarnings("unchecked")
     @Override
     public void loadByCache(@NonNull LoadCallback<List<Topic>> loadCallback) {
+        List<Topic> ts = null;
         if (file.exists()) {
             try {
-                new AsyncTask<Void, Void, List<Topic>>() {
-
-                    @Override
-                    protected List<Topic> doInBackground(Void... params) {
-                        return (List<Topic>) FileKit.readObject(file);
-                    }
-
-                    @Override
-                    protected void onPostExecute(List<Topic> topics) {
-                        loadCallback.loadComplete(topics);
-                    }
-                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                ts = (List<Topic>) FileKit.readObject(file);
             } catch (Exception e) {
                 LogKit.d("loadByCache", "topics", e);
-                loadCallback.loadComplete(null);
             }
         }
+        loadCallback.loadComplete(ts);
     }
 
     @Override
@@ -98,6 +87,8 @@ public class TopicsProvider implements DataProvider<List<Topic>> {
         if (NetworkManager.getInstance().isNetworkConnected()) {
             if (more) {
                 pageable.next();
+            }else {
+                pageable.reset();
             }
             NetworkKit.index(pageable.pageNo, tab, pageable.pageSize, result -> {
                 List<Topic> ts = null;

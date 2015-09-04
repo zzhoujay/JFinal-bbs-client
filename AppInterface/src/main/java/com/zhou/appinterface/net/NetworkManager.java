@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.zhou.appinterface.callback.LoadCallback;
@@ -37,6 +38,7 @@ public class NetworkManager {
     private OkHttpClient client;
     private Gson gson;
     private Context context;
+    private InterfaceResult defaultResult;
 
     private NetworkManager(Context context, Gson gson) {
         this.context = context;
@@ -49,16 +51,22 @@ public class NetworkManager {
         this.gson = gson;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> void request(Request request, @NonNull LoadCallback<T> loadCallback, Class<T> tClass) {
         new AsyncTask<Request, Void, T>() {
             @Override
             protected T doInBackground(Request... params) {
+                InterfaceResult def = null;
                 try {
                     String body = client.newCall(params[0]).execute().body().string();
                     LogKit.d("result-body", body);
                     return gson.fromJson(body, tClass);
                 } catch (Exception e) {
+                    def = getDefaultResult(e);
                     Log.d("request", "error", e);
+                }
+                if (tClass.isInstance(def)) {
+                    return (T) def;
                 }
                 return null;
             }
@@ -71,16 +79,27 @@ public class NetworkManager {
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, request);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> void request(Request request, @NonNull LoadCallback<T> loadCallback, Type type) {
         new AsyncTask<Request, Void, T>() {
             @Override
             protected T doInBackground(Request... params) {
+                InterfaceResult def;
                 try {
                     String body = client.newCall(params[0]).execute().body().string();
                     LogKit.d("result-body", body);
                     return gson.fromJson(body, type);
                 } catch (Exception e) {
                     Log.d("request", "error", e);
+                    def = getDefaultResult(e);
+                }
+                try {
+                    TypeToken<T> tTypeToken = (TypeToken<T>) TypeToken.get(type);
+                    if (tTypeToken.getRawType().isInstance(def)) {
+                        return (T) def;
+                    }
+                }catch (Exception e){
+                    LogKit.d("request","type",e);
                 }
                 return null;
             }
@@ -99,4 +118,11 @@ public class NetworkManager {
         return networkInfo != null && networkInfo.isAvailable();
     }
 
+    private InterfaceResult getDefaultResult(Throwable e) {
+        return defaultResult == null ? null : defaultResult.error(e);
+    }
+
+    public void setDefaultResult(InterfaceResult defaultResult) {
+        this.defaultResult = defaultResult;
+    }
 }

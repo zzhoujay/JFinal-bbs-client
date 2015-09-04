@@ -10,4 +10,6 @@ public abstract class InterfaceResult implements Serializable {
 
     public abstract boolean isSuccessful();
 
+    public abstract InterfaceResult error(Throwable e);
+
 }

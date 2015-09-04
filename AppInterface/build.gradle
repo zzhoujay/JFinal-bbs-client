@@ -46,6 +46,4 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
 
-    compile 'zhou.widget:advanceadapter:1.0'
-
 }

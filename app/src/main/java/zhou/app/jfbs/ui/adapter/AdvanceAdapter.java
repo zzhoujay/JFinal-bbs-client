@@ -1,4 +1,4 @@
-package zhou.widget;
+package zhou.app.jfbs.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;

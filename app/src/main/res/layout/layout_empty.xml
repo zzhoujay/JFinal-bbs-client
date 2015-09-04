@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/interface_fragment_empty"
+    android:id="@+id/fragment_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -16,7 +16,7 @@
         android:src="@drawable/ic_iconfont_shibai" />
 
     <TextView
-        android:id="@+id/fragment_nodata_text"
+        android:id="@+id/fragment_empty_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

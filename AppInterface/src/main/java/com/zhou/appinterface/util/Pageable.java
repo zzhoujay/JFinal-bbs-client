@@ -14,14 +14,18 @@ public class Pageable implements Parcelable, Serializable {
     public int pageNo;
     public int pageSize;
 
+    private int r_n, r_s;
+
     public Pageable(int pageNo, int pageSize) {
         this.pageNo = pageNo;
         this.pageSize = pageSize;
+
+        r_n = pageNo;
+        r_s = pageSize;
     }
 
     public Pageable() {
-        this.pageNo = 1;
-        this.pageSize = 20;
+        this(1, 20);
     }
 
     public void next() {
@@ -30,6 +34,11 @@ public class Pageable implements Parcelable, Serializable {
 
     public void prev() {
         pageNo--;
+    }
+
+    public void reset() {
+        pageNo = r_n;
+        pageSize = r_s;
     }
 
 

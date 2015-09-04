@@ -12,6 +12,8 @@ import com.zhou.appinterface.model.InterfaceModel;
  */
 public class Section extends InterfaceModel implements Parcelable {
 
+    public static final Section home=new Section(0,0,"all","首页",1);
+
     public int id;
     @SerializedName("display_index")
     public int index;
@@ -35,6 +37,14 @@ public class Section extends InterfaceModel implements Parcelable {
     }
 
     public Section() {
+    }
+
+    public Section(int id, int index, String tab, String name, int state) {
+        this.id = id;
+        this.index = index;
+        this.tab = tab;
+        this.name = name;
+        this.state = state;
     }
 
     protected Section(Parcel in) {

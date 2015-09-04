@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import zhou.app.jfbs.ui.activity.HomeActivity;
 import zhou.app.jfbs.ui.activity.QrCodeActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void qrCode(View view) {
-        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
+        startActivity(new Intent(this,HomeActivity.class));
+//        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
     }
 
     @Override
