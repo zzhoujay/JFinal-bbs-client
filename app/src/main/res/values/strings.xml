@@ -12,4 +12,8 @@
     <string name="test_content">这是测试内容</string>
     <string name="test_time">2015年9月3日</string>
     <string name="failure_network">网络连接失败</string>
+    <string name="text_load_more">加载中</string>
+    <string name="text_load_again">重新加载</string>
+    <string name="text_last_page">到最后一页了，没有内容了</string>
+    <string name="title_topic_detail">主题详情</string>
 </resources>

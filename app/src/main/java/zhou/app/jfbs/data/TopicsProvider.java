@@ -7,9 +7,11 @@ import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataProvider;
 import com.zhou.appinterface.net.NetworkManager;
 import com.zhou.appinterface.util.LogKit;
+import com.zhou.appinterface.util.Notifier;
 import com.zhou.appinterface.util.Pageable;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import zhou.app.jfbs.App;
@@ -25,16 +27,21 @@ import zhou.app.jfbs.util.NetworkKit;
  */
 public class TopicsProvider implements DataProvider<List<Topic>> {
 
+    public static final int LAST_PAGE = 0x2233;
+
     private List<Topic> topics;
     private String tab, key;
     private Pageable pageable;
     private File file;
+    private int max;
+    private List<Notifier> notifiers;
 
     public TopicsProvider(String tab, int size) {
         this.tab = tab;
         this.pageable = new Pageable(1, size);
         key = HashKit.md5(tab == null ? "all.cache" : (tab + ".cache"));
         file = new File(App.cacheFile(), key());
+        notifiers = new ArrayList<>();
     }
 
     @Override
@@ -87,13 +94,16 @@ public class TopicsProvider implements DataProvider<List<Topic>> {
         if (NetworkManager.getInstance().isNetworkConnected()) {
             if (more) {
                 pageable.next();
-            }else {
+            } else {
                 pageable.reset();
             }
             NetworkKit.index(pageable.pageNo, tab, pageable.pageSize, result -> {
                 List<Topic> ts = null;
                 if (result.isSuccessful()) {
                     ts = result.detail.list;
+                    if (result.detail.lastPage||result.detail.list.isEmpty()) {
+                        noticeLastPage();
+                    }
                 } else {
                     pageable.prev();
                     LogKit.d("load", "topics,failure,code:" + result.code + ",msg:" + result.description);
@@ -126,5 +136,26 @@ public class TopicsProvider implements DataProvider<List<Topic>> {
     @Override
     public String key() {
         return key;
+    }
+
+    @Override
+    public void addNotifier(Notifier notifier) {
+        notifiers.add(notifier);
+    }
+
+    @Override
+    public void removeNotifier(Notifier notifier) {
+        notifiers.remove(notifier);
+    }
+
+    @Override
+    public void removeAllNotifier() {
+        notifiers.clear();
+    }
+
+    private void noticeLastPage() {
+        for (Notifier notifier : notifiers) {
+            notifier.notice(LAST_PAGE);
+        }
     }
 }

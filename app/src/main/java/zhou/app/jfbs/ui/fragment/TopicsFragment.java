@@ -22,7 +22,7 @@ import zhou.app.jfbs.ui.adapter.TopicAdapter;
 /**
  * Created by zzhoujay on 2015/8/28 0028.
  */
-public class TopicsFragment extends Fragment {
+public class TopicsFragment extends Fragment implements View.OnClickListener {
 
     private final static String TAB = "tab";
 
@@ -36,6 +36,7 @@ public class TopicsFragment extends Fragment {
     private AdvanceAdapter advanceAdapter;
     private TopicAdapter topicAdapter;
     private LinearLayoutManager manager;
+    private boolean isLastPage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,17 @@ public class TopicsFragment extends Fragment {
             tab = bundle.getString(TAB);
         }
         provider = new TopicsProvider(tab, 20);
+
+        provider.addNotifier(notifierId -> {
+            switch (notifierId) {
+                case TopicsProvider.LAST_PAGE:
+                    loadMoreProgress.setVisibility(View.GONE);
+                    loadMoreText.setText(R.string.text_last_page);
+                    loadMoreText.setClickable(false);
+                    isLastPage = true;
+                    break;
+            }
+        });
     }
 
     @Nullable
@@ -52,12 +64,16 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         loadMore = inflater.inflate(R.layout.layout_load_more, container, false);
-        loadMoreText = (TextView) loadMore.findViewById(R.id.fragment_loading_text);
+        loadMoreText = (TextView) loadMore.findViewById(R.id.fragment_load_more_text);
+        loadMoreProgress = (ProgressBar) loadMore.findViewById(R.id.fragment_load_more_progress);
+
+        loadMoreText.setText(R.string.text_load_more);
+
         initView(v);
+
+        loadMore.setVisibility(View.GONE);
+
         init();
-
-//        loadMore.setVisibility(View.GONE);
-
 
         swipeRefreshLayout.setOnRefreshListener(this::refresh);
 
@@ -86,9 +102,7 @@ public class TopicsFragment extends Fragment {
         failureText = (TextView) v.findViewById(R.id.fragment_failure_text);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-        loadMoreProgress=v.findViewById(R.id.fragment_load_more_progress);
 
-        loadMoreText.setText(R.string.text_load_more);
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -104,6 +118,7 @@ public class TopicsFragment extends Fragment {
     }
 
     public void refresh() {
+        isLastPage = false;
         loading();
         DataManager.getInstance().update(provider, topics -> {
             if (topics == null) {
@@ -123,7 +138,10 @@ public class TopicsFragment extends Fragment {
             if (topics != null) {
                 topicAdapter.setTopics(topics);
             } else {
-
+                loadMoreProgress.setVisibility(View.GONE);
+                loadMoreText.setText(R.string.text_load_again);
+                loadMoreText.setClickable(true);
+                loadMoreText.setOnClickListener(this);
             }
         });
     }
@@ -187,6 +205,24 @@ public class TopicsFragment extends Fragment {
             topicsFragment.setArguments(bundle);
         }
         return topicsFragment;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        provider.removeAllNotifier();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fragment_load_more_text:
+                loadMoreProgress.setVisibility(View.VISIBLE);
+                loadMoreText.setText(R.string.text_load_more);
+                loadMoreText.setClickable(false);
+                more();
+                break;
+        }
     }
 
 }

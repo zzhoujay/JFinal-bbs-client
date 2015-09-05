@@ -7,6 +7,7 @@ import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataProvider;
 import com.zhou.appinterface.net.NetworkManager;
 import com.zhou.appinterface.util.LogKit;
+import com.zhou.appinterface.util.Notifier;
 
 import java.io.File;
 import java.util.List;
@@ -101,5 +102,20 @@ public class SectionProvider implements DataProvider<List<Section>> {
     @Override
     public String key() {
         return App.SAVE_SECTIONS;
+    }
+
+    @Override
+    public void addNotifier(Notifier notifier) {
+
+    }
+
+    @Override
+    public void removeNotifier(Notifier notifier) {
+
+    }
+
+    @Override
+    public void removeAllNotifier() {
+
     }
 }

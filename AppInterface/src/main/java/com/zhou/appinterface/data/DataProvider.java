@@ -4,12 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.zhou.appinterface.callback.LoadCallback;
+import com.zhou.appinterface.util.Notification;
 
 /**
  * Created by zzhoujay on 2015/8/9 0009.
  * 数据提供器
  */
-public interface DataProvider<T> {
+public interface DataProvider<T> extends Notification {
 
     /**
      * 数据持久化（应异步进行）
@@ -29,7 +30,7 @@ public interface DataProvider<T> {
      *
      * @param t 数据
      */
-    void set(@Nullable T t,boolean more);
+    void set(@Nullable T t, boolean more);
 
     /**
      * 从缓存中加载数据（应异步实现）
@@ -71,4 +72,6 @@ public interface DataProvider<T> {
      */
     @NonNull
     String key();
+
+
 }
