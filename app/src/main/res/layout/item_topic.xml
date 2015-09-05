@@ -55,7 +55,7 @@
             android:layout_toLeftOf="@id/view"
             android:layout_toStartOf="@id/view"
             android:text="@string/test_reply"
-            android:textColor="@color/material_grey_400"
+            android:textColor="@color/material_grey_500"
             android:textSize="@dimen/material_caption" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_alignStart="@id/title"
             android:layout_margin="5dp"
             android:text="@string/test_time"
-            android:textColor="@color/material_grey_400"
+            android:textColor="@color/material_grey_500"
             android:textSize="@dimen/material_caption" />
 
         <TextView

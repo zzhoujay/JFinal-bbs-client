@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.zhou.appinterface.util.LogKit;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -23,6 +24,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.Holder> {
     private List<Topic> topics;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
 
+    public TopicAdapter() {
+
+    }
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -79,8 +83,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.Holder> {
     public void addTopics(List<Topic> topics) {
         if (this.topics == null) {
             this.topics = topics;
+            notifyDataSetChanged();
         } else {
+            int start = this.topics.size();
+            int count = topics.size();
             this.topics.addAll(topics);
+            notifyItemRangeInserted(start, count);
+            LogKit.i("addTopic",String.format("origin:%d,now:%d",start,this.topics.size()));
         }
     }
 }

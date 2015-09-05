@@ -9,6 +9,7 @@ import com.zhou.appinterface.net.NetworkManager;
 
 import java.io.File;
 
+import zhou.app.jfbs.model.Result;
 import zhou.app.jfbs.util.HashKit;
 
 /**
@@ -40,6 +41,7 @@ public class App extends Application {
         app = this;
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         NetworkManager.init(this, gson);
+        NetworkManager.getInstance().setDefaultResult(new Result<>());
     }
 
     public static App getInstance() {

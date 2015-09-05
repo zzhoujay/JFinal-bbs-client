@@ -52,7 +52,7 @@ public class NetworkManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void request(Request request, @NonNull LoadCallback<T> loadCallback, Class<T> tClass) {
+    public <T> void request(Request request, @NonNull LoadCallback<T> loadCallback, Class<T> tClass, InterfaceResult def1) {
         new AsyncTask<Request, Void, T>() {
             @Override
             protected T doInBackground(Request... params) {
@@ -65,8 +65,10 @@ public class NetworkManager {
                     def = getDefaultResult(e);
                     Log.d("request", "error", e);
                 }
-                if (tClass.isInstance(def)) {
+                try {
                     return (T) def;
+                }catch (Exception e){
+                    LogKit.d("request","cast",e);
                 }
                 return null;
             }
@@ -94,10 +96,7 @@ public class NetworkManager {
                     def = getDefaultResult(e);
                 }
                 try {
-                    TypeToken<T> tTypeToken = (TypeToken<T>) TypeToken.get(type);
-                    if (tTypeToken.getRawType().isInstance(def)) {
-                        return (T) def;
-                    }
+                    return (T) def;
                 }catch (Exception e){
                     LogKit.d("request","type",e);
                 }

@@ -9,11 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zhou.appinterface.data.DataManager;
-import com.zhou.appinterface.util.LogKit;
 
 import zhou.app.jfbs.R;
 import zhou.app.jfbs.data.TopicsProvider;
@@ -31,6 +30,7 @@ public class TopicsFragment extends Fragment {
     private TopicsProvider provider;
     private View empty, failure, loadMore;
     private TextView emptyText, failureText, loadMoreText;
+    private ProgressBar loadMoreProgress;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private AdvanceAdapter advanceAdapter;
@@ -65,13 +65,9 @@ public class TopicsFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (manager.findLastVisibleItemPosition() == advanceAdapter.getItemCount()-1) {
-                        Toast.makeText(getActivity(), "bottom", Toast.LENGTH_SHORT).show();
+                    if (manager.findLastVisibleItemPosition() == advanceAdapter.getItemCount() - 1) {
                         more();
                     }
-                    LogKit.i("xxxxxxx",String.format("%d,%d",manager.findLastVisibleItemPosition(),advanceAdapter.getItemCount()));
-                    LogKit.i("position",String.format("getItemCount:%d,\nfindFirstCompletelyVisibleItemPosition:%d,\nfindFirstVisibleItemPosition:%d,\nfindLastCompletelyVisibleItemPosition:%d,\nfindLastVisibleItemPosition:%d",manager.getItemCount(),manager.findFirstCompletelyVisibleItemPosition()
-                            ,manager.findFirstVisibleItemPosition(),manager.findLastCompletelyVisibleItemPosition(),manager.findLastVisibleItemPosition()));
                 }
             }
 
@@ -90,6 +86,9 @@ public class TopicsFragment extends Fragment {
         failureText = (TextView) v.findViewById(R.id.fragment_failure_text);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        loadMoreProgress=v.findViewById(R.id.fragment_load_more_progress);
+
+        loadMoreText.setText(R.string.text_load_more);
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -119,10 +118,12 @@ public class TopicsFragment extends Fragment {
         });
     }
 
-    public void more(){
-        DataManager.getInstance().more(provider,topics -> {
-            if(topics!=null){
-                topicAdapter.addTopics(topics);
+    public void more() {
+        DataManager.getInstance().more(provider, topics -> {
+            if (topics != null) {
+                topicAdapter.setTopics(topics);
+            } else {
+
             }
         });
     }
