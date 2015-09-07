@@ -52,7 +52,9 @@ public class TopicsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         loadMore = inflater.inflate(R.layout.layout_load_more, container, false);
-        loadMoreText = (TextView) loadMore.findViewById(R.id.fragment_loading_text);
+        loadMoreText = (TextView) loadMore.findViewById(R.id.fragment_load_more_text);
+        loadMoreProgress= (ProgressBar) loadMore.findViewById(R.id.fragment_load_more_progress);
+
         initView(v);
         init();
 
@@ -86,7 +88,6 @@ public class TopicsFragment extends Fragment {
         failureText = (TextView) v.findViewById(R.id.fragment_failure_text);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-        loadMoreProgress=v.findViewById(R.id.fragment_load_more_progress);
 
         loadMoreText.setText(R.string.text_load_more);
 
