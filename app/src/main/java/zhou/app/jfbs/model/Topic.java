@@ -14,6 +14,10 @@ import java.util.Date;
  */
 public class Topic extends InterfaceModel implements Parcelable {
 
+    public static final String TOPIC = "topic";
+
+    public static final String TOPIC_ID = "topic_id";
+
     public String id;
     public String title;
     public String content;

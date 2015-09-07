@@ -70,6 +70,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
 
         loadMoreText.setText(R.string.text_load_more);
 
+        loadMore.setOnClickListener(this);
+
         initView(v);
 
         loadMore.setVisibility(View.GONE);
@@ -82,7 +84,7 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!isLastPage&&manager.findLastVisibleItemPosition() == advanceAdapter.getItemCount() - 1) {
+                    if (!isLastPage && manager.findLastVisibleItemPosition() == advanceAdapter.getItemCount() - 1) {
                         more();
                     }
                 }
@@ -139,10 +141,7 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
             if (topics != null) {
                 topicAdapter.setTopics(topics);
             } else {
-                loadMoreProgress.setVisibility(View.GONE);
-                loadMoreText.setText(R.string.text_load_again);
-                loadMoreText.setClickable(true);
-                loadMoreText.setOnClickListener(this);
+                loadMoreFailure();
             }
         });
     }
@@ -192,9 +191,13 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
 
     private void hiddenLoadMore() {
         if (manager.getItemCount() >= manager.findLastVisibleItemPosition() - manager.findFirstVisibleItemPosition() + 1) {
-            loadMore.setVisibility(View.VISIBLE);
+            if(isLastPage){
+                loadMoreLastPage();
+            }else {
+                loadMoreLoading();
+            }
         } else {
-            loadMore.setVisibility(View.GONE);
+            loadMoreHidden();
         }
     }
 
@@ -224,6 +227,32 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
                 more();
                 break;
         }
+    }
+
+    private void loadMoreHidden(){
+        loadMore.setClickable(false);
+        loadMore.setVisibility(View.GONE);
+    }
+
+    private void loadMoreLoading(){
+        loadMore.setClickable(false);
+        loadMore.setVisibility(View.VISIBLE);
+        loadMoreProgress.setVisibility(View.VISIBLE);
+        loadMoreText.setText(R.string.text_load_more);
+    }
+
+    private void loadMoreFailure(){
+        loadMore.setClickable(true);
+        loadMore.setVisibility(View.VISIBLE);
+        loadMoreProgress.setVisibility(View.GONE);
+        loadMoreText.setText(R.string.text_load_again);
+    }
+
+    private void loadMoreLastPage(){
+        loadMore.setClickable(false);
+        loadMore.setVisibility(View.VISIBLE);
+        loadMoreProgress.setVisibility(View.GONE);
+        loadMoreText.setText(R.string.text_last_page);
     }
 
 }

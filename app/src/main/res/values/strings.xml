@@ -17,4 +17,6 @@
     <string name="text_load_again">重新加载</string>
     <string name="text_last_page">到最后一页了，没有内容了</string>
     <string name="title_topic_detail">主题详情</string>
+    <string name="test_user">测试用户</string>
+    <string name="text_load_failure">加载失败</string>
 </resources>
