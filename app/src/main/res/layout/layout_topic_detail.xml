@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/material_white"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -86,7 +87,7 @@
         android:gravity="start"
         android:padding="5dp"
         android:text="@string/test_title"
-        android:textColor="@color/material_grey_800"
+        android:textColor="@color/material_grey_900"
         android:textSize="@dimen/material_title" />
 
     <View
@@ -100,7 +101,7 @@
         android:layout_marginTop="5dp"
         android:background="@color/material_grey_200" />
 
-    <TextView
+    <zhou.app.jfbs.ui.weiget.RichText
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +110,7 @@
         android:gravity="start"
         android:padding="5dp"
         android:text="@string/test_content"
-        android:textColor="@color/material_grey_700"
+        android:textColor="@color/material_grey_800"
         android:textSize="@dimen/material_body" />
 
     <View

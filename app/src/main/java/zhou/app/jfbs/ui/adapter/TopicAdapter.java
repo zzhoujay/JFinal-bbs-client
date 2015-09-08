@@ -105,7 +105,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.Holder> {
             int count = topics.size();
             this.topics.addAll(topics);
             notifyItemRangeInserted(start, count);
-            LogKit.i("addTopic",String.format("origin:%d,now:%d",start,this.topics.size()));
         }
     }
 }

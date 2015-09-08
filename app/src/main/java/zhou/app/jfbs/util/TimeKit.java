@@ -12,6 +12,8 @@ public class TimeKit {
 
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd hh:mm");
+    @SuppressLint("SimpleDateFormat")
+    public static final SimpleDateFormat simpleFormat=new SimpleDateFormat("yyyy年MM月dd");
 
     public static final long oneMinute = 60 * 1000;
     public static final long oneHour = oneMinute * 60;
@@ -37,7 +39,7 @@ public class TimeKit {
         } else if (offset < 3 * oneDay) {
             return "前天";
         } else {
-            return format(date);
+            return simpleFormat.format(date);
         }
     }
 }

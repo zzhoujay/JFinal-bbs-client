@@ -19,4 +19,5 @@
     <string name="title_topic_detail">主题详情</string>
     <string name="test_user">测试用户</string>
     <string name="text_load_failure">加载失败</string>
+    <string name="test_sign">做一名优秀的程序员</string>
 </resources>

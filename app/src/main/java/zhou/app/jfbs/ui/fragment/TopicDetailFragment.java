@@ -20,6 +20,8 @@ import zhou.app.jfbs.data.TopicWithRepliesProvider;
 import zhou.app.jfbs.model.Topic;
 import zhou.app.jfbs.ui.adapter.AdvanceAdapter;
 import zhou.app.jfbs.ui.adapter.RepliesAdapter;
+import zhou.app.jfbs.ui.weiget.RichText;
+import zhou.app.jfbs.util.MarkDownKit;
 import zhou.app.jfbs.util.TimeKit;
 
 /**
@@ -28,7 +30,8 @@ import zhou.app.jfbs.util.TimeKit;
 public class TopicDetailFragment extends Fragment {
 
     private ImageView icon;
-    private TextView name, time, reply, view, title, content, failureText;
+    private TextView name, time, reply, view, title, failureText;
+    private RichText content;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View failure;
@@ -56,6 +59,7 @@ public class TopicDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        v.setBackgroundResource(R.color.material_white);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         failure = v.findViewById(R.id.fragment_failure);
@@ -121,7 +125,7 @@ public class TopicDetailFragment extends Fragment {
         reply = (TextView) v.findViewById(R.id.reply);
         view = (TextView) v.findViewById(R.id.view);
         title = (TextView) v.findViewById(R.id.title);
-        content = (TextView) v.findViewById(R.id.content);
+        content = (RichText) v.findViewById(R.id.content);
     }
 
     private void initTopic(Topic topic) {
@@ -133,7 +137,7 @@ public class TopicDetailFragment extends Fragment {
             reply.setText(String.format("%d回复", topic.replyCount));
             view.setText(String.format("%d浏览", topic.view));
             title.setText(topic.title);
-            content.setText(topic.content);
+            content.setRichText(MarkDownKit.conver(topic.content));
         }
     }
 

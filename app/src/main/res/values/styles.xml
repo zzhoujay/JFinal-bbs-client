@@ -3,6 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/material_white</item>
+        <item name="colorPrimary">@color/material_lightGreen_500</item>
+        <item name="colorPrimaryDark">@color/material_green_500</item>
+        <item name="colorAccent">@color/material_lightBlue_500</item>
     </style>
+
+    <style name="MyAppTheme" parent="AppTheme"/>
 
 </resources>

@@ -139,6 +139,7 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     public void more() {
         DataManager.getInstance().more(provider, topics -> {
             if (topics != null) {
+                success();
                 topicAdapter.setTopics(topics);
             } else {
                 loadMoreFailure();
@@ -253,6 +254,10 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         loadMore.setVisibility(View.VISIBLE);
         loadMoreProgress.setVisibility(View.GONE);
         loadMoreText.setText(R.string.text_last_page);
+    }
+
+    public void setSwipeRefreshLayoutEnable(boolean enable){
+        swipeRefreshLayout.setEnabled(enable);
     }
 
 }

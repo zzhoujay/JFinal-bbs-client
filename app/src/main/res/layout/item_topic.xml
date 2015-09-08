@@ -32,7 +32,7 @@
             android:layout_toRightOf="@id/icon"
             android:maxLines="2"
             android:text="@string/test_title"
-            android:textColor="@color/material_grey_700"
+            android:textColor="@color/material_grey_800"
             android:textSize="@dimen/material_sub_head" />
 
 
@@ -45,7 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_margin="5dp"
             android:text="@string/test_view"
-            android:textColor="@color/material_grey_500"
+            android:textColor="@color/material_grey_600"
             android:textSize="@dimen/material_caption" />
 
         <TextView
@@ -57,7 +57,7 @@
             android:layout_toLeftOf="@id/view"
             android:layout_toStartOf="@id/view"
             android:text="@string/test_reply"
-            android:textColor="@color/material_grey_500"
+            android:textColor="@color/material_grey_600"
             android:textSize="@dimen/material_caption" />
 
         <TextView
@@ -69,7 +69,7 @@
             android:layout_alignStart="@id/title"
             android:layout_margin="5dp"
             android:text="@string/test_time"
-            android:textColor="@color/material_grey_500"
+            android:textColor="@color/material_grey_600"
             android:textSize="@dimen/material_caption" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:layout_margin="5dp"
             android:maxLines="2"
             android:text="@string/test_content"
-            android:textColor="@color/material_grey_500"
+            android:textColor="@color/material_grey_600"
             android:textSize="@dimen/material_body" />
 
     </RelativeLayout>

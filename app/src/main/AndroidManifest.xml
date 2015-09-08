@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MyAppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -24,6 +24,7 @@
         <activity android:name=".ui.activity.QrCodeActivity" />
         <activity android:name=".ui.activity.HomeActivity" />
         <activity android:name=".ui.activity.TopicDetailActivity" />
+        <activity android:name=".ui.activity.UserActivity"/>
     </application>
 
 </manifest>
