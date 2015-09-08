@@ -48,7 +48,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.Holder> {
                 .error(R.drawable.ic_iconfont_tupian).into(holder.icon);
         holder.title.setText(topic.title);
         holder.content.setText(topic.content);
-        holder.time.setText(TimeKit.format(topic.modifyTime == null ? topic.inTime : topic.modifyTime));
+        holder.time.setText(TimeKit.formatSimple(topic.modifyTime == null ? topic.inTime : topic.modifyTime));
         holder.reply.setText(String.format("%d回复", topic.replyCount));
         holder.view.setText(String.format("%d浏览", topic.view));
     }
