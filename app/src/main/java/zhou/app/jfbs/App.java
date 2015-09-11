@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.net.NetworkManager;
 
 import java.io.File;
@@ -32,8 +33,12 @@ public class App extends Application {
 
     public static final String SAVE_SECTIONS = HashKit.md5("sections.cache");
 
+    public static final String TOKEN = "token";
 
     private static App app;
+
+    private String token;
+    private String userKey;
 
     @Override
     public void onCreate() {
@@ -60,4 +65,23 @@ public class App extends Application {
         Toast.makeText(app, id, Toast.LENGTH_SHORT).show();
     }
 
+    public static boolean isLogin() {
+        return DataManager.getInstance().exist(app.getUserKey());
+    }
+
+    public void setToken(String token){
+        this.token=token;
+    }
+
+    public String getToken(){
+        return this.token;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
+    }
 }

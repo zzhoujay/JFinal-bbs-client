@@ -14,8 +14,11 @@ import android.widget.TextView;
 
 import com.zhou.appinterface.data.DataManager;
 
+import java.util.List;
+
 import zhou.app.jfbs.R;
 import zhou.app.jfbs.data.TopicsProvider;
+import zhou.app.jfbs.model.Topic;
 import zhou.app.jfbs.ui.adapter.AdvanceAdapter;
 import zhou.app.jfbs.ui.adapter.TopicAdapter;
 
@@ -37,26 +40,30 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     private TopicAdapter topicAdapter;
     private LinearLayoutManager manager;
     private boolean isLastPage;
+    private List<Topic> topics;
+    private boolean unChange;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(TAB)) {
-            tab = bundle.getString(TAB);
-        }
-        provider = new TopicsProvider(tab, 20);
-
-        provider.addNotifier(notifierId -> {
-            switch (notifierId) {
-                case TopicsProvider.LAST_PAGE:
-                    loadMoreProgress.setVisibility(View.GONE);
-                    loadMoreText.setText(R.string.text_last_page);
-                    loadMoreText.setClickable(false);
-                    isLastPage = true;
-                    break;
+        if(!unChange){
+            Bundle bundle = getArguments();
+            if (bundle != null && bundle.containsKey(TAB)) {
+                tab = bundle.getString(TAB);
             }
-        });
+            provider = new TopicsProvider(tab, 20);
+
+            provider.addNotifier(notifierId -> {
+                switch (notifierId) {
+                    case TopicsProvider.LAST_PAGE:
+                        loadMoreProgress.setVisibility(View.GONE);
+                        loadMoreText.setText(R.string.text_last_page);
+                        loadMoreText.setClickable(false);
+                        isLastPage = true;
+                        break;
+                }
+            });
+        }
     }
 
     @Nullable
@@ -76,24 +83,34 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
 
         loadMore.setVisibility(View.GONE);
 
-        init();
+        if(unChange){
+            if(topics==null){
+                failure();
+            }else if(topics.isEmpty()){
+                empty();
+            }else {
+                topicAdapter.setTopics(topics);
+            }
+            swipeRefreshLayout.setEnabled(false);
+        }else {
+            init();
+            swipeRefreshLayout.setOnRefreshListener(this::refresh);
 
-        swipeRefreshLayout.setOnRefreshListener(this::refresh);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!isLastPage && manager.findLastVisibleItemPosition() == advanceAdapter.getItemCount() - 1) {
-                        more();
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        if (!isLastPage && manager.findLastVisibleItemPosition() == advanceAdapter.getItemCount() - 1) {
+                            more();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            }
-        });
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                }
+            });
+        }
 
         return v;
     }
@@ -105,6 +122,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         failureText = (TextView) v.findViewById(R.id.fragment_failure_text);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+
+        emptyText.setText(R.string.text_empty);
 
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
@@ -231,11 +250,15 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadMoreHidden(){
+        if(unChange)
+            return;
         loadMore.setClickable(false);
         loadMore.setVisibility(View.GONE);
     }
 
     private void loadMoreLoading(){
+        if(unChange)
+            return;
         loadMore.setClickable(false);
         loadMore.setVisibility(View.VISIBLE);
         loadMoreProgress.setVisibility(View.VISIBLE);
@@ -243,6 +266,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadMoreFailure(){
+        if(unChange)
+            return;
         loadMore.setClickable(true);
         loadMore.setVisibility(View.VISIBLE);
         loadMoreProgress.setVisibility(View.GONE);
@@ -250,6 +275,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadMoreLastPage(){
+        if(unChange)
+            return;
         loadMore.setClickable(false);
         loadMore.setVisibility(View.VISIBLE);
         loadMoreProgress.setVisibility(View.GONE);
@@ -257,7 +284,32 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setSwipeRefreshLayoutEnable(boolean enable){
+        if(unChange)
+            return;
         swipeRefreshLayout.setEnabled(enable);
+    }
+
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
+    }
+
+    public boolean isUnChange() {
+        return unChange;
+    }
+
+    public void setUnChange(boolean unChange) {
+        this.unChange = unChange;
+    }
+
+    public static TopicsFragment newInstance(List<Topic> topics){
+        TopicsFragment topicsFragment=new TopicsFragment();
+        topicsFragment.setTopics(topics);
+        topicsFragment.setUnChange(true);
+        return topicsFragment;
     }
 
 }

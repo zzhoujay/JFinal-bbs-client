@@ -30,11 +30,11 @@ import zhou.app.jfbs.util.TimeKit;
 public class TopicDetailFragment extends Fragment {
 
     private ImageView icon;
-    private TextView name, time, reply, view, title, failureText;
+    private TextView name, time, reply, view, title, failureText,emptyText;
     private RichText content;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private View failure;
+    private View failure,empty;
     private TopicWithRepliesProvider provider;
     private AdvanceAdapter advanceAdapter;
     private RepliesAdapter repliesAdapter;
@@ -65,7 +65,13 @@ public class TopicDetailFragment extends Fragment {
         failure = v.findViewById(R.id.fragment_failure);
         failureText = (TextView) v.findViewById(R.id.fragment_failure_text);
 
+        empty=v.findViewById(R.id.fragment_empty);
+        emptyText= (TextView) v.findViewById(R.id.fragment_empty_text);
+
         failureText.setText(R.string.text_load_failure);
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         View head = inflater.inflate(R.layout.layout_topic_detail, container, false);
         initView(head);
@@ -91,12 +97,14 @@ public class TopicDetailFragment extends Fragment {
     private void init() {
         if (provider != null) {
             DataManager.getInstance().get(provider, topicWithReply -> {
-                if (topicWithReply != null) {
+                if(topicWithReply==null){
+                    failure();
+                }else if(topicWithReply.isEmpty()){
+                    empty();
+                }else {
                     initTopic(topicWithReply.topic);
                     repliesAdapter.setReplies(topicWithReply.replies);
                     success();
-                } else {
-                    failure();
                 }
             });
         }
@@ -106,12 +114,14 @@ public class TopicDetailFragment extends Fragment {
         if (provider != null) {
             loading();
             DataManager.getInstance().update(provider, topicWithReply -> {
-                if (topicWithReply != null) {
+                if(topicWithReply==null){
+                    failure();
+                }else if(topicWithReply.isEmpty()){
+                    empty();
+                }else {
                     initTopic(topicWithReply.topic);
                     repliesAdapter.setReplies(topicWithReply.replies);
                     success();
-                } else {
-                    failure();
                 }
             });
         }
@@ -145,18 +155,28 @@ public class TopicDetailFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setVisibility(View.INVISIBLE);
         failure.setVisibility(View.VISIBLE);
+        empty.setVisibility(View.INVISIBLE);
     }
 
     public void success() {
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setRefreshing(false);
         failure.setVisibility(View.INVISIBLE);
+        empty.setVisibility(View.INVISIBLE);
     }
 
     public void loading() {
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setRefreshing(true);
         failure.setVisibility(View.INVISIBLE);
+        empty.setVisibility(View.INVISIBLE);
+    }
+
+    public void empty(){
+        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        failure.setVisibility(View.INVISIBLE);
+        empty.setVisibility(View.VISIBLE);
     }
 
     public static TopicDetailFragment newInstance(Topic topic) {

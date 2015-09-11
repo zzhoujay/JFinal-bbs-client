@@ -16,6 +16,16 @@ public class NotificationResult extends InterfaceModel implements  Parcelable {
     public List<Notification> oldMessages;
     public List<Notification> notifications;
 
+    public NotificationResult(List<Notification> oldMessages, List<Notification> notifications) {
+        this.oldMessages = oldMessages;
+        this.notifications = notifications;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return oldMessages == null || (oldMessages.isEmpty() && notifications == null || notifications.isEmpty());
+    }
+
     @Override
     public String toString() {
         return "NotificationResult{" +

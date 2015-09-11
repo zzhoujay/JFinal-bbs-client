@@ -16,6 +16,16 @@ public class TopicWithReply extends InterfaceModel implements Parcelable {
     public Topic topic;
     public List<Reply> replies;
 
+    public TopicWithReply(Topic topic, List<Reply> replies) {
+        this.topic = topic;
+        this.replies = replies;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return topic==null&&(replies==null||replies.isEmpty());
+    }
+
     @Override
     public String toString() {
         return "TopicWithReply{" +

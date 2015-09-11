@@ -204,4 +204,13 @@ public class DataManager {
         }
     }
 
+    public boolean hasLoad(String key){
+        DataProvider provider=providers.get(key);
+        return provider != null && provider.hasLoad();
+    }
+
+    public boolean exist(String key){
+        return providers.containsKey(key);
+    }
+
 }

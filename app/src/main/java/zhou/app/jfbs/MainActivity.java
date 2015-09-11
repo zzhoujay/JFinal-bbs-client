@@ -6,7 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import zhou.app.jfbs.ui.activity.HomeActivity;
+import com.zhou.appinterface.data.DataManager;
+import com.zhou.appinterface.util.LogKit;
+
+import java.util.Arrays;
+
+import zhou.app.jfbs.data.UserProvider;
 import zhou.app.jfbs.ui.activity.QrCodeActivity;
 import zhou.app.jfbs.ui.activity.UserActivity;
 
@@ -45,17 +50,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void qrCode(View view) {
-        startActivity(new Intent(this,UserActivity.class));
-//        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
+//        startActivity(new Intent(this,UserActivity.class));
+        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 12 && resultCode == RESULT_OK) {
             String result = data.getStringExtra(QrCodeActivity.RESULT);
-            String[] rs = result.split("@||@");
+            LogKit.d("result",result);
+            String[] rs = result.split("@\\|\\|@");
+            LogKit.d("jj", Arrays.toString(rs));
             if (rs.length == 2) {
-
+                UserProvider provider = new UserProvider(rs[0]);
+                DataManager.getInstance().add(provider);
+                App.getInstance().setUserKey(provider.key());
+                App.getInstance().setToken(rs[0]);
+                startActivity(new Intent(this, UserActivity.class));
             } else {
                 Toast.makeText(this, R.string.error_qr_code, Toast.LENGTH_SHORT).show();
             }
