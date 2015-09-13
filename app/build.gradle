@@ -51,4 +51,5 @@ dependencies {
     compile project(':AppInterface')
     compile files('lib/markdown4j-2.2.jar')
     compile 'com.orhanobut:logger:1.11'
+    compile 'com.bettervectordrawable:lib:0.4'
 }

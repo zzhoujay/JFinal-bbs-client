@@ -46,7 +46,7 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!unChange){
+        if (!unChange) {
             Bundle bundle = getArguments();
             if (bundle != null && bundle.containsKey(TAB)) {
                 tab = bundle.getString(TAB);
@@ -83,16 +83,16 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
 
         loadMore.setVisibility(View.GONE);
 
-        if(unChange){
-            if(topics==null){
+        if (unChange) {
+            if (topics == null) {
                 failure();
-            }else if(topics.isEmpty()){
+            } else if (topics.isEmpty()) {
                 empty();
-            }else {
+            } else {
                 topicAdapter.setTopics(topics);
             }
             swipeRefreshLayout.setEnabled(false);
-        }else {
+        } else {
             init();
             swipeRefreshLayout.setOnRefreshListener(this::refresh);
 
@@ -211,9 +211,9 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
 
     private void hiddenLoadMore() {
         if (manager.getItemCount() >= manager.findLastVisibleItemPosition() - manager.findFirstVisibleItemPosition() + 1) {
-            if(isLastPage){
+            if (isLastPage) {
                 loadMoreLastPage();
-            }else {
+            } else {
                 loadMoreLoading();
             }
         } else {
@@ -234,7 +234,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        provider.removeAllNotifier();
+        if (provider != null)
+            provider.removeAllNotifier();
     }
 
     @Override
@@ -249,15 +250,15 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void loadMoreHidden(){
-        if(unChange)
+    private void loadMoreHidden() {
+        if (unChange)
             return;
         loadMore.setClickable(false);
         loadMore.setVisibility(View.GONE);
     }
 
-    private void loadMoreLoading(){
-        if(unChange)
+    private void loadMoreLoading() {
+        if (unChange)
             return;
         loadMore.setClickable(false);
         loadMore.setVisibility(View.VISIBLE);
@@ -265,8 +266,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         loadMoreText.setText(R.string.text_load_more);
     }
 
-    private void loadMoreFailure(){
-        if(unChange)
+    private void loadMoreFailure() {
+        if (unChange)
             return;
         loadMore.setClickable(true);
         loadMore.setVisibility(View.VISIBLE);
@@ -274,8 +275,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         loadMoreText.setText(R.string.text_load_again);
     }
 
-    private void loadMoreLastPage(){
-        if(unChange)
+    private void loadMoreLastPage() {
+        if (unChange)
             return;
         loadMore.setClickable(false);
         loadMore.setVisibility(View.VISIBLE);
@@ -283,8 +284,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         loadMoreText.setText(R.string.text_last_page);
     }
 
-    public void setSwipeRefreshLayoutEnable(boolean enable){
-        if(unChange)
+    public void setSwipeRefreshLayoutEnable(boolean enable) {
+        if (unChange)
             return;
         swipeRefreshLayout.setEnabled(enable);
     }
@@ -305,8 +306,8 @@ public class TopicsFragment extends Fragment implements View.OnClickListener {
         this.unChange = unChange;
     }
 
-    public static TopicsFragment newInstance(List<Topic> topics){
-        TopicsFragment topicsFragment=new TopicsFragment();
+    public static TopicsFragment newInstance(List<Topic> topics) {
+        TopicsFragment topicsFragment = new TopicsFragment();
         topicsFragment.setTopics(topics);
         topicsFragment.setUnChange(true);
         return topicsFragment;

@@ -17,11 +17,13 @@ import zhou.app.jfbs.ui.fragment.QrCodeFragment;
 public class QrCodeActivity extends ToolbarActivity implements ZXingScannerView.ResultHandler {
 
     public static final String RESULT = "result";
+    public static final int REQUEST_CODE = 0x111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         quickFinish();
+        setTitle(R.string.title_login);
         getToolbar().setBackgroundColor(getResources().getColor(R.color.material_lightGreen_500));
         setContent(QrCodeFragment.newInstance(this));
     }

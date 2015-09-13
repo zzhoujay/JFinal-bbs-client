@@ -34,11 +34,12 @@
             android:textColor="@color/material_grey_600"
             android:textSize="@dimen/material_body" />
 
-        <TextView
+        <zhou.app.jfbs.ui.weiget.RichText
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/name"
+            android:padding="4dp"
             android:layout_alignStart="@id/name"
             android:layout_below="@id/name"
             android:layout_margin="4dp"

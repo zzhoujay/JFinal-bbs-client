@@ -5,7 +5,12 @@
         <item name="android:colorPrimary">@color/material_lightGreen_500</item>
         <item name="android:colorPrimaryDark">@color/material_lightGreen_700</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">#77000000</item>
+        <item name="android:statusBarColor">#11000000</item>
+    </style>
+
+    <style name="MyAppTheme.Dark" parent="AppTheme">
+        <item name="android:colorPrimary">@color/material_lightGreen_500</item>
+        <item name="android:colorPrimaryDark">@color/material_lightGreen_700</item>
     </style>
 
 </resources>

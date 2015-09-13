@@ -11,4 +11,7 @@
 
     <style name="MyAppTheme" parent="AppTheme"/>
 
+    <style name="MyAppTheme.Dark" parent="AppTheme"/>
+
+
 </resources>

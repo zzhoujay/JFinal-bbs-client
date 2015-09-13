@@ -68,7 +68,7 @@ public class UserActivity extends AppCompatActivity implements AppBarLayout.OnOf
             progressDialog.setMessage(getString(R.string.loading_userdate));
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
-            DataManager.getInstance().get(App.getInstance().getUserKey(), user -> {
+            DataManager.getInstance().get(App.USER_KEY, user -> {
                 if (user != null && user instanceof UserResult) {
                     initData((UserResult) user);
                 } else {

@@ -33,4 +33,27 @@
     <string name="loading_userdate">正在获取用户信息。。。</string>
     <string name="failure_userdata">获取用户信息失败</string>
     <string name="title_user">我的资料</string>
+    <string name="text_collect">收藏</string>
+    <string name="text_collect_cancel">取消收藏</string>
+    <string name="success_collect_cancel">取消收藏成功</string>
+    <string name="success_collect">收藏成功</string>
+    <string name="hint_reply">发表评论</string>
+    <string name="desc_send_button">发送按钮</string>
+    <string name="failure_create_reply">发表评论失败</string>
+    <string name="no_reply">还没有人回复</string>
+    <string name="hint_content">请输入内容</string>
+    <string name="hint_title">标题</string>
+    <string name="done">完成</string>
+    <string name="success_create_topic">话题发表成功</string>
+    <string name="error_sections_null">分类为空</string>
+    <string name="success_create_reply">发表评论成功</string>
+    <string name="title_create_topic">新建主题</string>
+    <string name="title_create_reply">发表回复</string>
+    <string name="click_login">点击登录</string>
+    <string name="failure_get_user">获取用户信息失败</string>
+    <string name="loading_data">数据加载中。。。</string>
+    <string name="title_login">扫描二维码登录</string>
+    <string name="menu_option">操作</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_setting">设置</string>
 </resources>

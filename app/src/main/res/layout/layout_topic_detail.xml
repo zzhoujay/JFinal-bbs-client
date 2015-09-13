@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/material_white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/material_white">
 
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="8dp">
 
         <ImageView
             android:id="@+id/icon"
@@ -24,7 +25,10 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/icon"
             android:layout_toRightOf="@id/icon"
             android:text="@string/test_user"
@@ -36,35 +40,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/name"
-            android:layout_alignParentBottom="true"
             android:layout_alignStart="@id/name"
             android:layout_below="@id/name"
             android:text="@string/test_time"
             android:textColor="@color/material_grey_500"
             android:textSize="@dimen/material_caption" />
 
-        <TextView
-            android:id="@+id/view"
+        <Button
+            android:id="@+id/collect"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:text="@string/test_view"
-            android:textColor="@color/material_grey_500"
-            android:textSize="@dimen/material_caption" />
+            android:text="@string/text_collect"
+            android:textColor="@color/material_blue_500"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/view"
-            android:layout_margin="5dp"
-            android:text="@string/test_reply"
-            android:textColor="@color/material_grey_500"
-            android:textSize="@dimen/material_caption" />
+
     </RelativeLayout>
 
     <View
@@ -83,41 +78,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/gap1"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:gravity="start"
         android:padding="5dp"
         android:text="@string/test_title"
         android:textColor="@color/material_grey_900"
         android:textSize="@dimen/material_title" />
 
-    <View
-        android:id="@+id/gap2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/title"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/material_grey_200" />
 
     <zhou.app.jfbs.ui.weiget.RichText
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gap2"
-        android:layout_margin="5dp"
+        android:layout_below="@id/title"
+        android:layout_margin="10dp"
         android:gravity="start"
         android:padding="5dp"
         android:text="@string/test_content"
         android:textColor="@color/material_grey_800"
         android:textSize="@dimen/material_body" />
 
+    <TextView
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/test_view"
+        android:textColor="@color/material_grey_500"
+        android:textSize="@dimen/material_caption" />
+
+    <TextView
+        android:id="@+id/reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/test_reply"
+        android:textColor="@color/material_grey_500"
+        android:textSize="@dimen/material_caption" />
+
     <View
         android:id="@+id/gap3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/content"
+        android:layout_below="@id/view"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"

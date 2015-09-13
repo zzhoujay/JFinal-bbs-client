@@ -21,10 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.QrCodeActivity" />
+        <activity
+            android:name=".ui.activity.QrCodeActivity"
+            android:theme="@style/MyAppTheme.Dark" />
         <activity android:name=".ui.activity.HomeActivity" />
-        <activity android:name=".ui.activity.TopicDetailActivity" />
-        <activity android:name=".ui.activity.UserActivity"/>
+        <activity
+            android:name=".ui.activity.TopicDetailActivity"
+            android:theme="@style/MyAppTheme.Dark" />
+        <activity android:name=".ui.activity.UserActivity" />
+        <activity
+            android:name=".ui.activity.CreateActivity"
+            android:theme="@style/MyAppTheme.Dark" />
     </application>
 
 </manifest>

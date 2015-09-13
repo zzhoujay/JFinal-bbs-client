@@ -13,4 +13,5 @@
     <dimen name="material_body">15sp</dimen>
     <dimen name="material_caption">13sp</dimen>
     <dimen name="material_button">15sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

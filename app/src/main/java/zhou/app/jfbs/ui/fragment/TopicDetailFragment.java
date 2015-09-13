@@ -9,20 +9,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.zhou.appinterface.data.DataManager;
 
+import zhou.app.jfbs.App;
 import zhou.app.jfbs.R;
 import zhou.app.jfbs.data.TopicWithRepliesProvider;
 import zhou.app.jfbs.model.Topic;
+import zhou.app.jfbs.model.TopicWithReply;
 import zhou.app.jfbs.ui.adapter.AdvanceAdapter;
 import zhou.app.jfbs.ui.adapter.RepliesAdapter;
 import zhou.app.jfbs.ui.weiget.RichText;
 import zhou.app.jfbs.util.MarkDownKit;
+import zhou.app.jfbs.util.NetworkKit;
 import zhou.app.jfbs.util.TimeKit;
+import zhou.app.jfbs.util.UserKit;
 
 /**
  * Created by zzhoujay on 2015/9/5 0005.
@@ -30,14 +36,16 @@ import zhou.app.jfbs.util.TimeKit;
 public class TopicDetailFragment extends Fragment {
 
     private ImageView icon;
-    private TextView name, time, reply, view, title, failureText,emptyText;
+    private TextView name, time, reply, view, title, failureText, emptyText, noItemText;
+    private Button collect;
     private RichText content;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private View failure,empty;
+    private View failure, empty, noItem, head;
     private TopicWithRepliesProvider provider;
     private AdvanceAdapter advanceAdapter;
     private RepliesAdapter repliesAdapter;
+    private LinearLayoutManager linearLayoutManager;
     private Topic topic;
 
     @Override
@@ -47,10 +55,10 @@ public class TopicDetailFragment extends Fragment {
         if (bundle != null && bundle.containsKey(Topic.TOPIC_ID)) {
             provider = new TopicWithRepliesProvider(bundle.getString(Topic.TOPIC_ID));
         }
-        if(bundle!=null&&bundle.containsKey(Topic.TOPIC)){
-            this.topic=bundle.getParcelable(Topic.TOPIC);
-            if(topic!=null){
-                provider=new TopicWithRepliesProvider(this.topic.id);
+        if (bundle != null && bundle.containsKey(Topic.TOPIC)) {
+            this.topic = bundle.getParcelable(Topic.TOPIC);
+            if (topic != null) {
+                provider = new TopicWithRepliesProvider(this.topic.id);
             }
         }
     }
@@ -65,27 +73,32 @@ public class TopicDetailFragment extends Fragment {
         failure = v.findViewById(R.id.fragment_failure);
         failureText = (TextView) v.findViewById(R.id.fragment_failure_text);
 
-        empty=v.findViewById(R.id.fragment_empty);
-        emptyText= (TextView) v.findViewById(R.id.fragment_empty_text);
+        empty = v.findViewById(R.id.fragment_empty);
+        emptyText = (TextView) v.findViewById(R.id.fragment_empty_text);
+
+        noItem = inflater.inflate(R.layout.layout_no_item, container, false);
+        noItemText = (TextView) noItem.findViewById(R.id.no_item);
 
         failureText.setText(R.string.text_load_failure);
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        View head = inflater.inflate(R.layout.layout_topic_detail, container, false);
+        head = inflater.inflate(R.layout.layout_topic_detail, container, false);
         initView(head);
 
         repliesAdapter = new RepliesAdapter();
         advanceAdapter = new AdvanceAdapter(repliesAdapter);
         advanceAdapter.addHeader(head);
+        advanceAdapter.addFooter(noItem);
         recyclerView.setAdapter(advanceAdapter);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         swipeRefreshLayout.setOnRefreshListener(this::refresh);
 
-        if(topic!=null){
+        if (topic != null) {
             initTopic(topic);
         }
 
@@ -96,15 +109,14 @@ public class TopicDetailFragment extends Fragment {
 
     private void init() {
         if (provider != null) {
+            loading();
             DataManager.getInstance().get(provider, topicWithReply -> {
-                if(topicWithReply==null){
+                if (topicWithReply == null) {
                     failure();
-                }else if(topicWithReply.isEmpty()){
+                } else if (topicWithReply.isEmpty()) {
                     empty();
-                }else {
-                    initTopic(topicWithReply.topic);
-                    repliesAdapter.setReplies(topicWithReply.replies);
-                    success();
+                } else {
+                    setUpData(topicWithReply);
                 }
             });
         }
@@ -114,17 +126,22 @@ public class TopicDetailFragment extends Fragment {
         if (provider != null) {
             loading();
             DataManager.getInstance().update(provider, topicWithReply -> {
-                if(topicWithReply==null){
+                if (topicWithReply == null) {
                     failure();
-                }else if(topicWithReply.isEmpty()){
+                } else if (topicWithReply.isEmpty()) {
                     empty();
-                }else {
-                    initTopic(topicWithReply.topic);
-                    repliesAdapter.setReplies(topicWithReply.replies);
-                    success();
+                } else {
+                    setUpData(topicWithReply);
                 }
             });
         }
+    }
+
+    private void setUpData(TopicWithReply topicWithReply) {
+        initTopic(topicWithReply.topic);
+        repliesAdapter.setReplies(topicWithReply.replies);
+        checkItem(repliesAdapter.getItemCount());
+        success();
     }
 
 
@@ -136,6 +153,7 @@ public class TopicDetailFragment extends Fragment {
         view = (TextView) v.findViewById(R.id.view);
         title = (TextView) v.findViewById(R.id.title);
         content = (RichText) v.findViewById(R.id.content);
+        collect = (Button) v.findViewById(R.id.collect);
     }
 
     private void initTopic(Topic topic) {
@@ -148,6 +166,19 @@ public class TopicDetailFragment extends Fragment {
             view.setText(String.format("%d浏览", topic.view));
             title.setText(topic.title);
             content.setRichText(MarkDownKit.conver(topic.content));
+
+            if (App.isLogin()) {
+                collect.setVisibility(View.VISIBLE);
+                UserKit.isCollected(topic, isCollect -> {
+                    if (isCollect) {
+                        setUnCollect(topic);
+                    } else {
+                        setCollect(topic);
+                    }
+                });
+            } else {
+                collect.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -172,11 +203,56 @@ public class TopicDetailFragment extends Fragment {
         empty.setVisibility(View.INVISIBLE);
     }
 
-    public void empty(){
+    public void empty() {
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setVisibility(View.INVISIBLE);
         failure.setVisibility(View.INVISIBLE);
         empty.setVisibility(View.VISIBLE);
+    }
+
+    private void setUnCollect(Topic topic) {
+        collect.setText(R.string.text_collect_cancel);
+        collect.setOnClickListener(v -> NetworkKit.deleteCollect(App.getInstance().getToken(), topic.id, result -> {
+            if (result.isSuccessful()) {
+                setCollect(topic);
+                Toast.makeText(getActivity(), R.string.success_collect_cancel, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), result.description, Toast.LENGTH_SHORT).show();
+            }
+        }));
+    }
+
+    private void setCollect(Topic topic) {
+        collect.setText(R.string.text_collect);
+        collect.setOnClickListener(v -> NetworkKit.collect(App.getInstance().getToken(), topic.id, result -> {
+            if (result.isSuccessful()) {
+                setUnCollect(topic);
+                Toast.makeText(getActivity(), R.string.success_collect, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), result.description, Toast.LENGTH_SHORT).show();
+            }
+        }));
+    }
+
+    private void checkItem(int replyCount) {
+        if (replyCount == 0) {
+            noItemText.setText(R.string.no_reply);
+            noItem.setVisibility(View.VISIBLE);
+            int offset = swipeRefreshLayout.getHeight() - head.getHeight();
+            int lineHeight=noItemText.getLineHeight()*2;
+            noItemText.setHeight(offset < lineHeight ? lineHeight:offset);
+        } else {
+            int all = linearLayoutManager.getItemCount();
+            int visibleCount = linearLayoutManager.findLastVisibleItemPosition() - linearLayoutManager.findFirstVisibleItemPosition();
+            if (all >= visibleCount) {
+                noItem.setVisibility(View.GONE);
+                noItemText.setHeight(0);
+            } else {
+                noItem.setVisibility(View.VISIBLE);
+                noItemText.setText("");
+                noItemText.setHeight(swipeRefreshLayout.getHeight() - head.getHeight());
+            }
+        }
     }
 
     public static TopicDetailFragment newInstance(Topic topic) {
@@ -187,9 +263,9 @@ public class TopicDetailFragment extends Fragment {
         return topicDetailFragment;
     }
 
-    public static TopicDetailFragment newInstance(String id){
-        TopicDetailFragment topicDetailFragment=new TopicDetailFragment();
-        Bundle bundle=new Bundle();
+    public static TopicDetailFragment newInstance(String id) {
+        TopicDetailFragment topicDetailFragment = new TopicDetailFragment();
+        Bundle bundle = new Bundle();
         bundle.putString(Topic.TOPIC_ID, id);
         topicDetailFragment.setArguments(bundle);
         return topicDetailFragment;

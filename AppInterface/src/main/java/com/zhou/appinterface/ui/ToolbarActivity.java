@@ -42,6 +42,10 @@ public class ToolbarActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.interface_activity_content, fragment).commit();
     }
 
+    public void setBottom(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().add(R.id.interface_container_bottom, fragment).commit();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (quickFinish && item.getItemId() == android.R.id.home) {

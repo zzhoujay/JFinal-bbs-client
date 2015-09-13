@@ -24,6 +24,4 @@
             android:layout_marginRight="10dp" />
 
     </com.zhou.appinterface.ui.SwipeToRefreshLayout>
-
-
 </FrameLayout>

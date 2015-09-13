@@ -15,7 +15,6 @@ import zhou.app.jfbs.App;
 import zhou.app.jfbs.R;
 import zhou.app.jfbs.model.UserResult;
 import zhou.app.jfbs.util.FileKit;
-import zhou.app.jfbs.util.HashKit;
 import zhou.app.jfbs.util.NetworkKit;
 
 /**
@@ -23,27 +22,29 @@ import zhou.app.jfbs.util.NetworkKit;
  */
 public class UserProvider implements DataProvider<UserResult> {
 
+
     private UserResult userResult;
     private String key;
-    private File file;
+    private static final File FILE = new File(App.cacheFile(), App.USER_KEY);
+    private static final File TOKEN_FILE = new File(App.cacheFile(), App.TOKEN_KEY);
     private String token;
 
     public UserProvider(String token) {
-        this.token=token;
-        key= HashKit.md5(token+".cache");
-        file=new File(App.cacheFile(),key);
+        this.token = token;
+        key = App.USER_KEY;
     }
 
     @Override
     public void persistence() {
-        if(hasLoad()){
-            new Thread(){
+        if (hasLoad()) {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
-                        FileKit.writeObject(file,userResult);
-                    }catch (Exception e){
-                        LogKit.d("persistence","user",e);
+                        FileKit.writeObject(FILE, userResult);
+                        FileKit.writeString(TOKEN_FILE, token);
+                    } catch (Exception e) {
+                        LogKit.d("persistence", "user", e);
                     }
                 }
             }.start();
@@ -58,17 +59,17 @@ public class UserProvider implements DataProvider<UserResult> {
 
     @Override
     public void set(@Nullable UserResult userResult, boolean more) {
-        this.userResult=userResult;
+        this.userResult = userResult;
     }
 
     @Override
     public void loadByCache(@NonNull LoadCallback<UserResult> loadCallback) {
-        UserResult ur=null;
-        if(file.exists()){
+        UserResult ur = null;
+        if (FILE.exists()) {
             try {
-                ur= (UserResult) FileKit.readObject(file);
-            }catch (Exception e){
-                LogKit.d("loadByCache","user",e);
+                ur = (UserResult) FileKit.readObject(FILE);
+            } catch (Exception e) {
+                LogKit.d("loadByCache", "user", e);
             }
         }
         loadCallback.loadComplete(ur);
@@ -76,18 +77,18 @@ public class UserProvider implements DataProvider<UserResult> {
 
     @Override
     public void load(@NonNull LoadCallback<UserResult> loadCallback, boolean more) {
-        if(NetworkManager.getInstance().isNetworkConnected()){
-            NetworkKit.userInfo(token,result->{
-                UserResult ur=null;
-                if(result.isSuccessful()){
-                    ur=result.detail;
-                }else {
+        if (NetworkManager.getInstance().isNetworkConnected()) {
+            NetworkKit.userInfo(token, result -> {
+                UserResult ur = null;
+                if (result.isSuccessful()) {
+                    ur = result.detail;
+                } else {
                     App.toast(result.description);
-                    LogKit.d("load","user,failure,code:"+result.code+",msg:"+result.description);
+                    LogKit.d("load", "user,failure,code:" + result.code + ",msg:" + result.description);
                 }
                 loadCallback.loadComplete(ur);
             });
-        }else {
+        } else {
             App.toast(R.string.error_network);
             loadCallback.loadComplete(null);
         }
@@ -95,7 +96,7 @@ public class UserProvider implements DataProvider<UserResult> {
 
     @Override
     public boolean hasLoad() {
-        return userResult!=null;
+        return userResult != null;
     }
 
     @Override
@@ -105,7 +106,7 @@ public class UserProvider implements DataProvider<UserResult> {
 
     @Override
     public boolean clearCache() {
-        return file.exists()&&file.delete();
+        return FILE.exists() && FILE.delete() && TOKEN_FILE.exists() && TOKEN_FILE.delete();
     }
 
     @NonNull
@@ -127,5 +128,20 @@ public class UserProvider implements DataProvider<UserResult> {
     @Override
     public void removeAllNotifier() {
 
+    }
+
+    public String getToken(){
+        return this.token;
+    }
+
+    public static UserProvider loadFromCache() {
+        if(TOKEN_FILE.exists()){
+            return new UserProvider(FileKit.readString(TOKEN_FILE));
+        }
+        return null;
+    }
+
+    public static String loadToken(){
+        return FileKit.readString(TOKEN_FILE);
     }
 }

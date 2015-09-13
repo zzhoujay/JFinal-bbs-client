@@ -12,6 +12,7 @@ import com.zhou.appinterface.util.LogKit;
 import java.util.Arrays;
 
 import zhou.app.jfbs.data.UserProvider;
+import zhou.app.jfbs.ui.activity.HomeActivity;
 import zhou.app.jfbs.ui.activity.QrCodeActivity;
 import zhou.app.jfbs.ui.activity.UserActivity;
 
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void qrCode(View view) {
-//        startActivity(new Intent(this,UserActivity.class));
-        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
+        startActivity(new Intent(this, HomeActivity.class));
+//        startActivityForResult(new Intent(this, QrCodeActivity.class), 12);
     }
 
     @Override
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             if (rs.length == 2) {
                 UserProvider provider = new UserProvider(rs[0]);
                 DataManager.getInstance().add(provider);
-                App.getInstance().setUserKey(provider.key());
                 App.getInstance().setToken(rs[0]);
                 startActivity(new Intent(this, UserActivity.class));
             } else {
