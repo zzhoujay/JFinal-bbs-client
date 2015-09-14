@@ -2,6 +2,7 @@ package zhou.app.jfbs.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +37,7 @@ public class TopicDetailFragment extends Fragment {
 
     private ImageView icon;
     private TextView name, time, reply, view, title, failureText, emptyText, noItemText;
-    private Button collect;
+    private FloatingActionButton collect;
     private RichText content;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -153,7 +153,7 @@ public class TopicDetailFragment extends Fragment {
         view = (TextView) v.findViewById(R.id.view);
         title = (TextView) v.findViewById(R.id.title);
         content = (RichText) v.findViewById(R.id.content);
-        collect = (Button) v.findViewById(R.id.collect);
+        collect = (FloatingActionButton) v.findViewById(R.id.collect);
     }
 
     private void initTopic(Topic topic) {
@@ -211,7 +211,7 @@ public class TopicDetailFragment extends Fragment {
     }
 
     private void setUnCollect(Topic topic) {
-        collect.setText(R.string.text_collect_cancel);
+        collect.setImageResource(R.drawable.ic_turned_in_white_48px);
         collect.setOnClickListener(v -> NetworkKit.deleteCollect(App.getInstance().getToken(), topic.id, result -> {
             if (result.isSuccessful()) {
                 setCollect(topic);
@@ -223,7 +223,7 @@ public class TopicDetailFragment extends Fragment {
     }
 
     private void setCollect(Topic topic) {
-        collect.setText(R.string.text_collect);
+        collect.setImageResource(R.drawable.ic_turned_in_not_white_48px);
         collect.setOnClickListener(v -> NetworkKit.collect(App.getInstance().getToken(), topic.id, result -> {
             if (result.isSuccessful()) {
                 setUnCollect(topic);

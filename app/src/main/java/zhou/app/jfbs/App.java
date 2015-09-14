@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.bettervectordrawable.VectorDrawableCompat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.net.NetworkManager;
 
@@ -13,6 +14,7 @@ import java.io.File;
 
 import zhou.app.jfbs.data.UserProvider;
 import zhou.app.jfbs.model.Result;
+import zhou.app.jfbs.model.UserResult;
 import zhou.app.jfbs.util.HashKit;
 
 /**
@@ -67,10 +69,12 @@ public class App extends Application {
                 R.drawable.ic_supervisor_account_white_48px,
                 R.drawable.ic_mode_edit_white_48px,
                 R.drawable.ic_settings_white_48px,
-                R.drawable.ic_info_white_48px);
+                R.drawable.ic_info_white_48px,
+                R.drawable.ic_turned_in_not_white_48px,
+                R.drawable.ic_turned_in_white_48px);
 
-        UserProvider up=UserProvider.loadFromCache();
-        if(up!=null){
+        UserProvider up = UserProvider.loadFromCache();
+        if (up != null) {
             DataManager.getInstance().add(up);
             setToken(up.getToken());
         }
@@ -102,5 +106,13 @@ public class App extends Application {
 
     public String getToken() {
         return this.token;
+    }
+
+    public void requestRefreshUserInfo(LoadCallback<UserResult> loadCallback) {
+        if (isLogin()) {
+            DataManager.getInstance().update(USER_KEY, loadCallback);
+        } else {
+            loadCallback.loadComplete(null);
+        }
     }
 }

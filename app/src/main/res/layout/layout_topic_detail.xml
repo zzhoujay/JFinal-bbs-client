@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/material_white">
 
     <RelativeLayout
@@ -21,6 +22,18 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_iconfont_tupian" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_turned_in_not_white_48px"
+            android:visibility="visible" />
+
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
@@ -30,7 +43,9 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/icon"
+            android:layout_toLeftOf="@id/collect"
             android:layout_toRightOf="@id/icon"
+            android:layout_toStartOf="@id/collect"
             android:text="@string/test_user"
             android:textColor="@color/material_grey_600"
             android:textSize="@dimen/material_body" />
@@ -42,22 +57,11 @@
             android:layout_alignLeft="@id/name"
             android:layout_alignStart="@id/name"
             android:layout_below="@id/name"
+            android:layout_toLeftOf="@id/collect"
+            android:layout_toStartOf="@id/collect"
             android:text="@string/test_time"
             android:textColor="@color/material_grey_500"
             android:textSize="@dimen/material_caption" />
-
-        <Button
-            android:id="@+id/collect"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:text="@string/text_collect"
-            android:textColor="@color/material_blue_500"
-            android:visibility="gone" />
 
 
     </RelativeLayout>
