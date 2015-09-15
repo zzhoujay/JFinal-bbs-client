@@ -3,17 +3,17 @@ package com.zhou.appinterface.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.zhou.appinterface.R;
+import com.zhou.appinterface.context.BaseActivity;
 
 /**
  * Created by zzhoujay on 2015/8/9 0009.
  * 自带Toolbar的Activity（需要主题设置为AppCompat，并且隐藏原来的ActionBar）
  */
-public class ToolbarActivity extends AppCompatActivity {
+public class ToolbarActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private boolean quickFinish;

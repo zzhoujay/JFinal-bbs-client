@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.zhou.appinterface.callback.LoadCallback;
@@ -39,6 +38,7 @@ public class NetworkManager {
     private Gson gson;
     private Context context;
     private InterfaceResult defaultResult;
+    private PersistentCookieStore persistentCookieStore;
 
     private NetworkManager(Context context, Gson gson) {
         this.context = context;
@@ -46,7 +46,8 @@ public class NetworkManager {
         client.setWriteTimeout(3, TimeUnit.SECONDS);
         client.setReadTimeout(3, TimeUnit.SECONDS);
         client.setConnectTimeout(3, TimeUnit.SECONDS);
-        client.setCookieHandler(new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL));
+        persistentCookieStore = new PersistentCookieStore(context);
+        client.setCookieHandler(new CookieManager(persistentCookieStore, CookiePolicy.ACCEPT_ALL));
 
         this.gson = gson;
     }
@@ -67,8 +68,8 @@ public class NetworkManager {
                 }
                 try {
                     return (T) def;
-                }catch (Exception e){
-                    LogKit.d("request","cast",e);
+                } catch (Exception e) {
+                    LogKit.d("request", "cast", e);
                 }
                 return null;
             }
@@ -97,8 +98,8 @@ public class NetworkManager {
                 }
                 try {
                     return (T) def;
-                }catch (Exception e){
-                    LogKit.d("request","type",e);
+                } catch (Exception e) {
+                    LogKit.d("request", "type", e);
                 }
                 return null;
             }
@@ -123,5 +124,9 @@ public class NetworkManager {
 
     public void setDefaultResult(InterfaceResult defaultResult) {
         this.defaultResult = defaultResult;
+    }
+
+    public void reset() {
+        persistentCookieStore.removeAll();
     }
 }
