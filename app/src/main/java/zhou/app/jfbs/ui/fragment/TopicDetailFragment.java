@@ -215,6 +215,13 @@ public class TopicDetailFragment extends Fragment {
         collect.setOnClickListener(v -> NetworkKit.deleteCollect(App.getInstance().getToken(), topic.id, result -> {
             if (result.isSuccessful()) {
                 setCollect(topic);
+                App.getInstance().requestRefreshUserInfo(userResult -> {
+                    if (userResult != null) {
+                        App.getInstance().noticeUserUpdate();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.failure_get_user, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Toast.makeText(getActivity(), R.string.success_collect_cancel, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), result.description, Toast.LENGTH_SHORT).show();
@@ -227,6 +234,13 @@ public class TopicDetailFragment extends Fragment {
         collect.setOnClickListener(v -> NetworkKit.collect(App.getInstance().getToken(), topic.id, result -> {
             if (result.isSuccessful()) {
                 setUnCollect(topic);
+                App.getInstance().requestRefreshUserInfo(userResult -> {
+                    if (userResult != null) {
+                        App.getInstance().noticeUserUpdate();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.failure_get_user, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Toast.makeText(getActivity(), R.string.success_collect, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), result.description, Toast.LENGTH_SHORT).show();
@@ -239,8 +253,8 @@ public class TopicDetailFragment extends Fragment {
             noItemText.setText(R.string.no_reply);
             noItem.setVisibility(View.VISIBLE);
             int offset = swipeRefreshLayout.getHeight() - head.getHeight();
-            int lineHeight=noItemText.getLineHeight()*2;
-            noItemText.setHeight(offset < lineHeight ? lineHeight:offset);
+            int lineHeight = noItemText.getLineHeight() * 2;
+            noItemText.setHeight(offset < lineHeight ? lineHeight : offset);
         } else {
             int all = linearLayoutManager.getItemCount();
             int visibleCount = linearLayoutManager.findLastVisibleItemPosition() - linearLayoutManager.findFirstVisibleItemPosition();
