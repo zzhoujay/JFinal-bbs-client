@@ -12,6 +12,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.util.LogKit;
+import com.zhou.appinterface.util.Resetable;
 
 import java.lang.reflect.Type;
 import java.net.CookieManager;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Created by zzhoujay on 2015/8/9 0009.
  * 网络请求管理器
  */
-public class NetworkManager {
+public class NetworkManager implements Resetable{
 
     private static NetworkManager networkManager;
 
@@ -126,6 +127,7 @@ public class NetworkManager {
         this.defaultResult = defaultResult;
     }
 
+    @Override
     public void reset() {
         persistentCookieStore.removeAll();
     }

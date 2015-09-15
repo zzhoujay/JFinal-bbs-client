@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.zhou.appinterface.callback.LoadCallback;
+import com.zhou.appinterface.util.Resetable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  * Created by zzhoujay on 2015/8/9 0009.
  * 数据管理器
  */
-public class DataManager {
+public class DataManager implements Resetable{
 
     private static DataManager dataManager;
 
@@ -213,4 +214,8 @@ public class DataManager {
         return providers.containsKey(key);
     }
 
+    @Override
+    public void reset() {
+        providers.clear();
+    }
 }
