@@ -19,7 +19,13 @@ public class UserKit {
             DataManager.getInstance().get(App.USER_KEY, user -> {
                 if (user != null && user instanceof UserResult) {
                     List<Topic> topics = ((UserResult) user).collects;
-                    loadCallback.loadComplete(topics.contains(topic));
+                    for(Topic t:topics){
+                        if(topic.id.equals(t.id)){
+                            loadCallback.loadComplete(true);
+                            return;
+                        }
+                    }
+                    loadCallback.loadComplete(false);
                 }else {
                     loadCallback.loadComplete(false);
                 }
