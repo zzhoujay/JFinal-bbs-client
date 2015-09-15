@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -143,7 +144,8 @@ public class CreateFragment extends Fragment {
     }
 
     private void checkState() {
-        done.setVisible(isTopic ? !TextUtils.isEmpty(title.getText()) && !TextUtils.isEmpty(content.getText()) : !TextUtils.isEmpty(content.getText()));
+        boolean flag=isTopic ? !TextUtils.isEmpty(title.getText()) && !TextUtils.isEmpty(content.getText()) : !TextUtils.isEmpty(content.getText());
+        done.setVisible(flag);
     }
 
     @Override

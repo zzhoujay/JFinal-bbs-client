@@ -56,4 +56,10 @@
     <string name="menu_option">操作</string>
     <string name="menu_about">关于</string>
     <string name="menu_setting">设置</string>
+    <string name="title_alert">警告</string>
+    <string name="cancel">取消</string>
+    <string name="alert_clear_cache">你确定要清除缓存吗？（包括登陆信息）</string>
+    <string name="content_about">by zzhoujay</string>
+    <string name="menu_clear">清除缓存</string>
+    <string name="logout">退出登录</string>
 </resources>

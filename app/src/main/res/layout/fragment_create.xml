@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
 
         <View
             android:layout_width="match_parent"
@@ -27,17 +28,17 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_title"
             android:layout_margin="5dp"
+            android:hint="@string/hint_title"
             android:inputType="text" />
     </LinearLayout>
 
     <EditText
         android:id="@+id/content"
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/head"
+        android:layout_margin="5dp"
         android:gravity="start"
         android:hint="@string/hint_content" />
 

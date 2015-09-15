@@ -2,10 +2,11 @@ package zhou.app.jfbs;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.zhou.appinterface.context.ActivityStack;
+import com.zhou.appinterface.context.BaseActivity;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.util.LogKit;
 
@@ -16,7 +17,7 @@ import zhou.app.jfbs.ui.activity.HomeActivity;
 import zhou.app.jfbs.ui.activity.QrCodeActivity;
 import zhou.app.jfbs.ui.activity.UserActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @Override
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        ActivityStack.getInstance().closeOthers();
 
 
         /*NetworkKit.sections(result -> {

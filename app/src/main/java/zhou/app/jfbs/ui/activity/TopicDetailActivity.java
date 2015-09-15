@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.zhou.appinterface.context.BaseActivity;
 
 import zhou.app.jfbs.App;
 import zhou.app.jfbs.R;
@@ -19,7 +20,7 @@ import zhou.app.jfbs.ui.fragment.TopicDetailFragment;
 /**
  * Created by zzhoujay on 2015/9/5 0005.
  */
-public class TopicDetailActivity extends AppCompatActivity {
+public class TopicDetailActivity extends BaseActivity {
 
     private boolean quickFinish;
     private FloatingActionButton fab;

@@ -13,23 +13,23 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.zhou.appinterface.context.BaseActivity;
 import com.zhou.appinterface.data.DataManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import zhou.app.jfbs.App;
+import zhou.app.jfbs.MainActivity;
 import zhou.app.jfbs.R;
 import zhou.app.jfbs.data.SectionProvider;
 import zhou.app.jfbs.data.UserProvider;
@@ -37,12 +37,15 @@ import zhou.app.jfbs.model.Section;
 import zhou.app.jfbs.model.Topic;
 import zhou.app.jfbs.model.User;
 import zhou.app.jfbs.model.UserResult;
+import zhou.app.jfbs.ui.dialog.ConfirmDialog;
+import zhou.app.jfbs.ui.dialog.NoticeDialog;
 import zhou.app.jfbs.ui.fragment.TopicsFragment;
+import zhou.app.jfbs.util.UserKit;
 
 /**
  * Created by zzhoujay on 2015/8/28 0028.
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private static final int ID_MENU_SETTING = 0x2233;
     private static final int ID_MENU_ABOUT = 0x3322;
@@ -133,7 +136,18 @@ public class HomeActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(menuItem.getOrder(), true);
             } else {
                 switch (id) {
-
+                    case ID_MENU_SETTING:
+                        ConfirmDialog dialog = ConfirmDialog.newInstance(null, getString(R.string.alert_clear_cache), notifierId -> {
+                            UserKit.logout();
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                        });
+                        dialog.show(getSupportFragmentManager(), "clear_cache");
+                        break;
+                    case ID_MENU_ABOUT:
+                        NoticeDialog noticeDialog = NoticeDialog.newInstance(getString(R.string.menu_about), getString(R.string.content_about), null);
+                        noticeDialog.show(getSupportFragmentManager(), "about");
+                        break;
                 }
             }
             drawerLayout.closeDrawers();
@@ -175,11 +189,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        SubMenu subMenu = menu.addSubMenu(1, ID_MENU_OPTION, 1 + sections.size(), R.string.menu_option);
-        MenuItem itemSetting = subMenu.add(1, ID_MENU_SETTING, 0, R.string.menu_setting);
-        itemSetting.setIcon(R.drawable.ic_settings_white_48px);
-        MenuItem itemAbout = subMenu.add(1, ID_MENU_ABOUT, 1, R.string.menu_about);
+//        SubMenu subMenu = menu.addSubMenu(1, ID_MENU_OPTION, 1 + sections.size(), R.string.menu_option);
+        MenuItem itemSetting = menu.add(1, ID_MENU_SETTING, i+1, R.string.menu_clear);
+        itemSetting.setIcon(R.drawable.ic_delete_white_48px);
+        MenuItem itemAbout = menu.add(1, ID_MENU_ABOUT, i+2, R.string.menu_about);
         itemAbout.setIcon(R.drawable.ic_info_white_48px);
+
 
         PagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

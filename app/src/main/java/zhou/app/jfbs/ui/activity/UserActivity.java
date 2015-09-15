@@ -10,14 +10,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.zhou.appinterface.context.BaseActivity;
 import com.zhou.appinterface.data.DataManager;
 
 import zhou.app.jfbs.App;
@@ -27,11 +28,14 @@ import zhou.app.jfbs.model.UserResult;
 import zhou.app.jfbs.ui.dialog.NoticeDialog;
 import zhou.app.jfbs.ui.fragment.NotificationsFragment;
 import zhou.app.jfbs.ui.fragment.TopicsFragment;
+import zhou.app.jfbs.util.UserKit;
 
 /**
  * Created by zhou on 15/9/8.
  */
-public class UserActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
+
+    private static final int ID_MENU_LOGOUT = 0x4545;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -147,9 +151,19 @@ public class UserActivity extends AppCompatActivity implements AppBarLayout.OnOf
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, ID_MENU_LOGOUT,0,R.string.logout);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                finish();
+                return true;
+            case ID_MENU_LOGOUT:
+                UserKit.logout();
                 finish();
                 return true;
         }

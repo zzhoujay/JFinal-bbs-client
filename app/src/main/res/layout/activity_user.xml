@@ -27,9 +27,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp"
+                android:background="@color/user_head"
                 android:gravity="center_vertical"
-                android:background="@color/user_head">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/icon"
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/user_head"
+                android:fitsSystemWindows="true"
                 app:tabMode="scrollable" />
 
         </android.support.design.widget.CollapsingToolbarLayout>

@@ -2,6 +2,7 @@ package zhou.app.jfbs.util;
 
 import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataManager;
+import com.zhou.appinterface.net.NetworkManager;
 
 import java.util.List;
 
@@ -33,5 +34,11 @@ public class UserKit {
         }else {
             loadCallback.loadComplete(false);
         }
+    }
+
+    public static void logout(){
+        NetworkManager.getInstance().reset();
+        DataManager.getInstance().reset();
+        App.getInstance().reset();
     }
 }

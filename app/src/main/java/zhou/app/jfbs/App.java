@@ -10,6 +10,7 @@ import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.net.NetworkManager;
 import com.zhou.appinterface.util.Notifier;
+import com.zhou.appinterface.util.Resetable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import zhou.app.jfbs.util.HashKit;
 /**
  * Created by zzhoujay on 2015/8/11 0011.
  */
-public class App extends Application {
+public class App extends Application implements Resetable{
 
     public static final String SITE_URL = "http://jfbbs.tomoya.cn";
     public static final String SECTIONS_URL = SITE_URL + "/api/section";
@@ -133,9 +134,31 @@ public class App extends Application {
         userInfoUpdateNotifier.remove(notifier);
     }
 
+    public void removeAllUserNotifier(){
+        userInfoUpdateNotifier.clear();
+    }
+
     public void noticeUserUpdate() {
         for (Notifier notifier : userInfoUpdateNotifier) {
             notifier.notice(ID_NOTICE_USER_UPDATE);
         }
+    }
+
+    public void clearAllCache(){
+        File file=getCacheDir();
+        for(File f:file.listFiles()){
+            file.delete();
+        }
+    }
+
+    public void clearLoginStatus(){
+        setToken(null);
+    }
+
+    @Override
+    public void reset() {
+        clearAllCache();
+        clearLoginStatus();
+        removeAllUserNotifier();
     }
 }
