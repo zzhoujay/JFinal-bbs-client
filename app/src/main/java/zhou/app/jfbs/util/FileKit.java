@@ -2,6 +2,8 @@ package zhou.app.jfbs.util;
 
 import android.util.Log;
 
+import com.zhou.appinterface.util.LogKit;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,9 +16,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by 州 on 2015/7/4 0004.
@@ -210,6 +209,7 @@ public class FileKit {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
+            sb.deleteCharAt(sb.length()-1);
             content = sb.toString();
         } catch (FileNotFoundException e) {
             Log.d("readString", "error", e);
