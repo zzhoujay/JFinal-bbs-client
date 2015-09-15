@@ -9,8 +9,11 @@ import com.google.gson.GsonBuilder;
 import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.net.NetworkManager;
+import com.zhou.appinterface.util.Notifier;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import zhou.app.jfbs.data.UserProvider;
 import zhou.app.jfbs.model.Result;
@@ -43,9 +46,13 @@ public class App extends Application {
 
     public static final String TOKEN = "token";
 
+    public static final int ID_NOTICE_USER_UPDATE = 0x788990;
+
     private static App app;
 
     private String token;
+
+    private List<Notifier> userInfoUpdateNotifier;
 
     @Override
     public void onCreate() {
@@ -78,6 +85,8 @@ public class App extends Application {
             DataManager.getInstance().add(up);
             setToken(up.getToken());
         }
+
+        userInfoUpdateNotifier = new ArrayList<>();
     }
 
     public static App getInstance() {
@@ -113,6 +122,20 @@ public class App extends Application {
             DataManager.getInstance().update(USER_KEY, loadCallback);
         } else {
             loadCallback.loadComplete(null);
+        }
+    }
+
+    public void addUserUpdateNotifier(Notifier notifier) {
+        userInfoUpdateNotifier.add(notifier);
+    }
+
+    public void removeUserUpdateNotifier(Notifier notifier) {
+        userInfoUpdateNotifier.remove(notifier);
+    }
+
+    public void noticeUserUpdate() {
+        for (Notifier notifier : userInfoUpdateNotifier) {
+            notifier.notice(ID_NOTICE_USER_UPDATE);
         }
     }
 }
