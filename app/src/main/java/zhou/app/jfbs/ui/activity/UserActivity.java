@@ -21,6 +21,10 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.zhou.appinterface.context.BaseActivity;
 import com.zhou.appinterface.data.DataManager;
+import com.zhou.appinterface.util.LogKit;
+
+import java.text.ParseException;
+import java.util.Date;
 
 import zhou.app.jfbs.App;
 import zhou.app.jfbs.R;
@@ -30,6 +34,7 @@ import zhou.app.jfbs.ui.dialog.NoticeDialog;
 import zhou.app.jfbs.ui.fragment.NotificationsFragment;
 import zhou.app.jfbs.ui.fragment.TopicsFragment;
 import zhou.app.jfbs.util.NetworkKit;
+import zhou.app.jfbs.util.TimeKit;
 import zhou.app.jfbs.util.UserKit;
 
 /**
@@ -111,7 +116,15 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             dialog.setMessage(getString(R.string.check_in_loading));
             dialog.show();
             NetworkKit.daily(App.getInstance().getToken(), result -> {
+                dialog.dismiss();
                 if (result.isSuccessful()) {
+                    App.getInstance().requestRefreshUserInfo(userResult -> {
+                        if(userResult!=null){
+                            initData(userResult);
+                        }else {
+                            Toast.makeText(this,R.string.failure_get_user,Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     Toast.makeText(this, R.string.success_check_in, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, result.description, Toast.LENGTH_SHORT).show();
@@ -156,6 +169,21 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabsFromPagerAdapter(adapter);
 
+        boolean flag=false;
+        if(user.mission!=null){
+            try {
+                Date mission=TimeKit.FORMAT.parse(user.mission);
+                flag=TimeKit.isToday(mission);
+            } catch (ParseException e) {
+                LogKit.d("parse","mission",e);
+            }
+        }
+
+        if(flag){
+            setCannotCheckIn();
+        }else {
+            setCanCheckIn();
+        }
 
     }
 

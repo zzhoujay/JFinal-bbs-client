@@ -3,6 +3,7 @@ package zhou.app.jfbs.util;
 import android.annotation.SuppressLint;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -13,7 +14,9 @@ public class TimeKit {
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd hh:mm");
     @SuppressLint("SimpleDateFormat")
-    public static final SimpleDateFormat simpleFormat=new SimpleDateFormat("yyyy年MM月dd");
+    public static final SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy年MM月dd");
+    @SuppressLint("SimpleDateFormat")
+    public static final SimpleDateFormat FORMAT=new SimpleDateFormat("yyyy-MM-dd");
 
     public static final long oneMinute = 60 * 1000;
     public static final long oneHour = oneMinute * 60;
@@ -41,5 +44,17 @@ public class TimeKit {
         } else {
             return simpleFormat.format(date);
         }
+    }
+
+    public static boolean isToday(Date date) {
+        if (date == null) {
+            return false;
+        }
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        Calendar da = Calendar.getInstance();
+        da.setTime(date);
+        return now.get(Calendar.YEAR) == da.get(Calendar.YEAR) && now.get(Calendar.MONTH) == da.get(Calendar.MONTH) &&
+                now.get(Calendar.DAY_OF_MONTH) == da.get(Calendar.DAY_OF_MONTH);
     }
 }

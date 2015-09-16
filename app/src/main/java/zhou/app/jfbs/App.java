@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.zhou.appinterface.callback.LoadCallback;
 import com.zhou.appinterface.data.DataManager;
 import com.zhou.appinterface.net.NetworkManager;
+import com.zhou.appinterface.util.LogKit;
 import com.zhou.appinterface.util.Notifier;
 import com.zhou.appinterface.util.Resetable;
 
@@ -86,6 +87,7 @@ public class App extends Application implements Resetable{
         if (up != null) {
             DataManager.getInstance().add(up);
             setToken(up.getToken());
+            LogKit.d("token",getToken());
         }
 
         userInfoUpdateNotifier = new ArrayList<>();

@@ -29,10 +29,31 @@ public class User extends InterfaceModel implements  Parcelable {
     public String avatar;
     public String url;
     public String token;
-    public Date mission;
+    public String mission;
     public String email;
     public String gender;
     public String signature;
+
+
+    public User(String id, String nickName, String openId, Date inTime, String thirdloginType, int score, Date expireTime, String avatar, String url, String token, String mission, String email, String gender, String signature) {
+        this.id = id;
+        this.nickName = nickName;
+        this.openId = openId;
+        this.inTime = inTime;
+        this.thirdloginType = thirdloginType;
+        this.score = score;
+        this.expireTime = expireTime;
+        this.avatar = avatar;
+        this.url = url;
+        this.token = token;
+        this.mission = mission;
+        this.email = email;
+        this.gender = gender;
+        this.signature = signature;
+    }
+
+    public User() {
+    }
 
 
     @Override
@@ -52,30 +73,10 @@ public class User extends InterfaceModel implements  Parcelable {
         dest.writeString(this.avatar);
         dest.writeString(this.url);
         dest.writeString(this.token);
-        dest.writeLong(mission != null ? mission.getTime() : -1);
+        dest.writeString(this.mission);
         dest.writeString(this.email);
         dest.writeString(this.gender);
         dest.writeString(this.signature);
-    }
-
-    public User() {
-    }
-
-    public User(String id, String nickName, String openId, Date inTime, String thirdloginType, int score, Date expireTime, String avatar, String url, String token, Date mission, String email, String gender, String signature) {
-        this.id = id;
-        this.nickName = nickName;
-        this.openId = openId;
-        this.inTime = inTime;
-        this.thirdloginType = thirdloginType;
-        this.score = score;
-        this.expireTime = expireTime;
-        this.avatar = avatar;
-        this.url = url;
-        this.token = token;
-        this.mission = mission;
-        this.email = email;
-        this.gender = gender;
-        this.signature = signature;
     }
 
     protected User(Parcel in) {
@@ -91,8 +92,7 @@ public class User extends InterfaceModel implements  Parcelable {
         this.avatar = in.readString();
         this.url = in.readString();
         this.token = in.readString();
-        long tmpMission = in.readLong();
-        this.mission = tmpMission == -1 ? null : new Date(tmpMission);
+        this.mission = in.readString();
         this.email = in.readString();
         this.gender = in.readString();
         this.signature = in.readString();
@@ -121,7 +121,7 @@ public class User extends InterfaceModel implements  Parcelable {
                 ", avatar='" + avatar + '\'' +
                 ", url='" + url + '\'' +
                 ", token='" + token + '\'' +
-                ", mission=" + mission +
+                ", mission='" + mission + '\'' +
                 ", email='" + email + '\'' +
                 ", gender='" + gender + '\'' +
                 ", signature='" + signature + '\'' +

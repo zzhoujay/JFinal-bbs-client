@@ -1,10 +1,10 @@
 package zhou.app.jfbs.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -163,7 +163,12 @@ public class CreateFragment extends Fragment {
             case ID_DONE:
                 if (isTopic) {
                     if (sections != null) {
+                        ProgressDialog dialog1=new ProgressDialog(getActivity());
+                        dialog1.setCanceledOnTouchOutside(false);
+                        dialog1.setCancelable(false);
+                        dialog1.setMessage(getString(R.string.loading_create_topic));
                         NetworkKit.createTopic(token, title.getText().toString(), sections.get(type.getSelectedItemPosition()).tab, content.getText().toString(), null, result -> {
+                            dialog1.dismiss();
                             if (result.isSuccessful()) {
                                 Toast.makeText(getActivity(), R.string.success_create_topic, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
@@ -174,11 +179,17 @@ public class CreateFragment extends Fragment {
                                 Toast.makeText(getActivity(), result.description, Toast.LENGTH_SHORT).show();
                             }
                         });
+                        dialog1.show();
                     } else {
                         Toast.makeText(getActivity(), R.string.error_sections_null, Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    ProgressDialog dialog2=new ProgressDialog(getActivity());
+                    dialog2.setCancelable(false);
+                    dialog2.setCanceledOnTouchOutside(false);
+                    dialog2.setMessage(getString(R.string.loading_create_reply));
                     NetworkKit.createReply(token, topicId, content.getText().toString(), quote, result -> {
+                        dialog2.dismiss();
                         if (result.isSuccessful()) {
                             Toast.makeText(getActivity(), R.string.success_create_reply, Toast.LENGTH_SHORT).show();
                             if (replyCallback != null) {
@@ -189,6 +200,7 @@ public class CreateFragment extends Fragment {
                             Toast.makeText(getActivity(), result.description, Toast.LENGTH_SHORT).show();
                         }
                     });
+                    dialog2.show();
                 }
                 return true;
         }

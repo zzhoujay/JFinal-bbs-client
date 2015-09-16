@@ -66,4 +66,6 @@
     <string name="check_in_loading">签到中</string>
     <string name="success_check_in">签到成功</string>
     <string name="check_in_done">已签到</string>
+    <string name="loading_create_topic">发布中</string>
+    <string name="loading_create_reply">发表中</string>
 </resources>

@@ -1,5 +1,6 @@
 package zhou.app.jfbs.model;
 
+import com.google.gson.JsonSyntaxException;
 import com.zhou.appinterface.net.InterfaceResult;
 
 import java.net.SocketTimeoutException;
@@ -11,7 +12,7 @@ import java.net.SocketTimeoutException;
 public class Result<T> extends InterfaceResult {
 
     public static final Result TIME_OUT = new Result(-1, "网络连接超时");
-
+    public static final Result RESULT_ERROR = new Result(-3, "返回结果异常");
     public static final Result UNKNOWN = new Result(-2, "未知错误");
 
     public int code;
@@ -27,6 +28,8 @@ public class Result<T> extends InterfaceResult {
     public InterfaceResult error(Throwable e) {
         if (e instanceof SocketTimeoutException) {
             return TIME_OUT;
+        } else if (e instanceof JsonSyntaxException) {
+            return RESULT_ERROR;
         }
         return UNKNOWN;
     }
