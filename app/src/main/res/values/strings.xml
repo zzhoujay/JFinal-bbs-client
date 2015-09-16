@@ -62,4 +62,8 @@
     <string name="content_about">by zzhoujay</string>
     <string name="menu_clear">清除缓存</string>
     <string name="logout">退出登录</string>
+    <string name="check_in">签到</string>
+    <string name="check_in_loading">签到中</string>
+    <string name="success_check_in">签到成功</string>
+    <string name="check_in_done">已签到</string>
 </resources>

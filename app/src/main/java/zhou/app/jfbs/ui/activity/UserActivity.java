@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import zhou.app.jfbs.model.UserResult;
 import zhou.app.jfbs.ui.dialog.NoticeDialog;
 import zhou.app.jfbs.ui.fragment.NotificationsFragment;
 import zhou.app.jfbs.ui.fragment.TopicsFragment;
+import zhou.app.jfbs.util.NetworkKit;
 import zhou.app.jfbs.util.UserKit;
 
 /**
@@ -45,6 +47,7 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     private NotificationsFragment notificationsFragment;
     private ImageView icon;
     private TextView name, signature;
+    private Button checkIn;
     private int[] titles = {R.string.my_topics, R.string.my_collects, R.string.my_notification};
 
     @Override
@@ -93,12 +96,28 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         name = (TextView) findViewById(R.id.name);
         signature = (TextView) findViewById(R.id.signature);
 
+        checkIn = (Button) findViewById(R.id.check_in);
+
         collapsingToolbarLayout.setBackgroundResource(R.color.material_lightGreen_500);
 
         tabLayout.addTab(tabLayout.newTab().setText(R.string.my_topics));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.my_collects));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.my_notification));
 
+        checkIn.setOnClickListener(v -> {
+            ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setMessage(getString(R.string.check_in_loading));
+            dialog.show();
+            NetworkKit.daily(App.getInstance().getToken(), result -> {
+                if (result.isSuccessful()) {
+                    Toast.makeText(this, R.string.success_check_in, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, result.description, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     private void initData(UserResult userResult) {
@@ -136,6 +155,8 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabsFromPagerAdapter(adapter);
+
+
     }
 
     @Override
@@ -152,7 +173,7 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ID_MENU_LOGOUT,0,R.string.logout);
+        menu.add(0, ID_MENU_LOGOUT, 0, R.string.logout);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -176,5 +197,16 @@ public class UserActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             topics.setSwipeRefreshLayoutEnable(i == 0);
         if (collects != null)
             collects.setSwipeRefreshLayoutEnable(i == 0);
+    }
+
+    private void setCanCheckIn(){
+        checkIn.setText(R.string.check_in);
+        checkIn.setClickable(true);
+
+    }
+
+    private void setCannotCheckIn(){
+        checkIn.setText(R.string.check_in_done);
+        checkIn.setClickable(false);
     }
 }

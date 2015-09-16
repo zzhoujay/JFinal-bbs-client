@@ -145,15 +145,15 @@ public class CreateFragment extends Fragment {
 
     private void checkState() {
         boolean flag=isTopic ? !TextUtils.isEmpty(title.getText()) && !TextUtils.isEmpty(content.getText()) : !TextUtils.isEmpty(content.getText());
-        done.setVisible(flag);
+        done.setEnabled(flag);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         done = menu.add(0, ID_DONE, 0, R.string.done);
-        done.setIcon(R.drawable.ic_done_white_48px);
-        done.setVisible(false);
+        done.setIcon(R.drawable.menu_done_background);
+        done.setEnabled(false);
         done.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 

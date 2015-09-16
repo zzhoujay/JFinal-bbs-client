@@ -13,5 +13,8 @@
 
     <style name="MyAppTheme.Dark" parent="AppTheme"/>
 
+    <style name="MyAppTheme.Full" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
 </resources>

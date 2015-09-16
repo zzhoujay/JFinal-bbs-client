@@ -31,6 +31,18 @@
                 android:gravity="center_vertical"
                 android:padding="10dp">
 
+                <Button
+                    android:id="@+id/check_in"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text="@string/check_in" />
+
                 <ImageView
                     android:id="@+id/icon"
                     android:layout_width="70dp"
@@ -47,7 +59,9 @@
                     android:layout_alignTop="@id/icon"
                     android:layout_margin="5dp"
                     android:layout_toEndOf="@id/icon"
+                    android:layout_toLeftOf="@id/check_in"
                     android:layout_toRightOf="@id/icon"
+                    android:layout_toStartOf="@id/check_in"
                     android:text="@string/test_user"
                     android:textColor="@color/material_lightGreen_50"
                     android:textSize="@dimen/material_title" />
@@ -60,9 +74,12 @@
                     android:layout_alignStart="@id/name"
                     android:layout_below="@id/name"
                     android:layout_margin="5dp"
+                    android:layout_toLeftOf="@id/check_in"
+                    android:layout_toStartOf="@id/check_in"
                     android:text="@string/test_sign"
                     android:textColor="@color/material_lightGreen_50"
                     android:textSize="@dimen/material_body" />
+
 
             </RelativeLayout>
 

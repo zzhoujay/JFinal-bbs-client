@@ -79,7 +79,8 @@ public class App extends Application implements Resetable{
                 R.drawable.ic_settings_white_48px,
                 R.drawable.ic_info_white_48px,
                 R.drawable.ic_turned_in_not_white_48px,
-                R.drawable.ic_turned_in_white_48px);
+                R.drawable.ic_turned_in_white_48px,
+                R.drawable.ic_done_disable_48px);
 
         UserProvider up = UserProvider.loadFromCache();
         if (up != null) {
