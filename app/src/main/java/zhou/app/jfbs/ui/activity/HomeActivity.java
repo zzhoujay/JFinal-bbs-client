@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.zhou.appinterface.context.BaseActivity;
 import com.zhou.appinterface.data.DataManager;
+import com.zhou.appinterface.util.LogKit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,6 @@ import java.util.List;
 import zhou.app.jfbs.App;
 import zhou.app.jfbs.MainActivity;
 import zhou.app.jfbs.R;
-import zhou.app.jfbs.data.SectionProvider;
 import zhou.app.jfbs.data.UserProvider;
 import zhou.app.jfbs.model.Section;
 import zhou.app.jfbs.model.Topic;
@@ -52,7 +52,6 @@ public class HomeActivity extends BaseActivity {
     private static final int ID_MENU_OPTION = 0x3333;
 
     private DrawerLayout drawerLayout;
-    private SectionProvider sectionProvider;
     private TabLayout tabLayout;
     private List<Fragment> fragments;
     private ViewPager viewPager;
@@ -83,8 +82,7 @@ public class HomeActivity extends BaseActivity {
 
         createTopic.setImageResource(R.drawable.ic_mode_edit_white_48px);
 
-        sectionProvider = new SectionProvider();
-        DataManager.getInstance().add(sectionProvider);
+
         fragments = new ArrayList<>();
         initView();
 
@@ -104,21 +102,42 @@ public class HomeActivity extends BaseActivity {
             startActivity(intent);
         });
 
+        loadSections();
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private void loadSections() {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.loading_data));
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        DataManager.getInstance().get(sectionProvider, sections -> {
+        DataManager.getInstance().get(App.SAVE_SECTIONS, sections -> {
             progressDialog.dismiss();
-            if (sections != null) {
-                setUpDate(sections);
+            boolean flag = false;
+            int id=0;
+            if (sections != null && sections instanceof List) {
+                try {
+                    setUpDate((List<Section>) sections);
+                    flag = true;
+                } catch (Exception e) {
+                    LogKit.d("cast", "Home", e);
+                    id = R.string.failure_get_section;
+                }
             } else {
-                Toast.makeText(this, R.string.failure_network, Toast.LENGTH_SHORT).show();
+                id = R.string.failure_network;
             }
+            if (!flag)
+                showReload(getString(id));
         });
+    }
 
+    private void showReload(String msg) {
+        NoticeDialog dialog = NoticeDialog.newInstance(getString(R.string.tip), msg, getString(R.string.reload), notifierId -> loadSections());
+        dialog.setCancelable(false);
+        dialog.show(getSupportFragmentManager(), "show_reload");
     }
 
     private void initView() {
@@ -190,9 +209,9 @@ public class HomeActivity extends BaseActivity {
         }
 
 //        SubMenu subMenu = menu.addSubMenu(1, ID_MENU_OPTION, 1 + sections.size(), R.string.menu_option);
-        MenuItem itemSetting = menu.add(1, ID_MENU_SETTING, i+1, R.string.menu_clear);
+        MenuItem itemSetting = menu.add(1, ID_MENU_SETTING, i + 1, R.string.menu_clear);
         itemSetting.setIcon(R.drawable.ic_delete_white_48px);
-        MenuItem itemAbout = menu.add(1, ID_MENU_ABOUT, i+2, R.string.menu_about);
+        MenuItem itemAbout = menu.add(1, ID_MENU_ABOUT, i + 2, R.string.menu_about);
         itemAbout.setIcon(R.drawable.ic_info_white_48px);
 
 

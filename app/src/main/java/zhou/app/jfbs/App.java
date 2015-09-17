@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import zhou.app.jfbs.data.SectionProvider;
 import zhou.app.jfbs.data.UserProvider;
 import zhou.app.jfbs.model.Result;
 import zhou.app.jfbs.model.UserResult;
@@ -25,7 +26,7 @@ import zhou.app.jfbs.util.HashKit;
 /**
  * Created by zzhoujay on 2015/8/11 0011.
  */
-public class App extends Application implements Resetable{
+public class App extends Application implements Resetable {
 
     public static final String SITE_URL = "http://jfbbs.tomoya.cn";
     public static final String SECTIONS_URL = SITE_URL + "/api/section";
@@ -87,8 +88,12 @@ public class App extends Application implements Resetable{
         if (up != null) {
             DataManager.getInstance().add(up);
             setToken(up.getToken());
-            LogKit.d("token",getToken());
+            LogKit.d("token", getToken());
         }
+
+        SectionProvider sectionProvider = new SectionProvider();
+        DataManager.getInstance().add(sectionProvider);
+
 
         userInfoUpdateNotifier = new ArrayList<>();
     }
@@ -137,7 +142,7 @@ public class App extends Application implements Resetable{
         userInfoUpdateNotifier.remove(notifier);
     }
 
-    public void removeAllUserNotifier(){
+    public void removeAllUserNotifier() {
         userInfoUpdateNotifier.clear();
     }
 
@@ -147,14 +152,18 @@ public class App extends Application implements Resetable{
         }
     }
 
-    public void clearAllCache(){
-        File file=getCacheDir();
-        for(File f:file.listFiles()){
+    public void clearAllCache() {
+        File file = getCacheDir();
+        for (File f : file.listFiles()) {
             file.delete();
         }
     }
 
-    public void clearLoginStatus(){
+    public boolean hasInit() {
+        return DataManager.getInstance().hasLoad(USER_KEY) && DataManager.getInstance().hasLoad(SAVE_SECTIONS);
+    }
+
+    public void clearLoginStatus() {
         setToken(null);
     }
 

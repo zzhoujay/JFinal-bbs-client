@@ -19,9 +19,11 @@ public class NoticeDialog extends DialogFragment {
 
     public static final String TITLE = "title";
     public static final String CONTENT = "content";
+    public static final String CONFIRM = "confirm";
 
     private String title;
     private String content;
+    private String confirm;
     private Notifier notifier;
 
     @Override
@@ -31,6 +33,7 @@ public class NoticeDialog extends DialogFragment {
         if (bundle != null) {
             title = bundle.getString(TITLE);
             content = bundle.getString(CONTENT);
+            confirm = bundle.getString(CONFIRM);
         }
     }
 
@@ -38,7 +41,7 @@ public class NoticeDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title).setMessage(content).setPositiveButton(R.string.confirm, (v, i) -> {
+        builder.setTitle(title).setMessage(content).setPositiveButton(confirm == null ? getString(R.string.confirm) : confirm, (v, i) -> {
             if (notifier != null) {
                 notifier.notice(NOTICE_CONFIRM);
             }
@@ -56,6 +59,17 @@ public class NoticeDialog extends DialogFragment {
         Bundle bundle = new Bundle();
         bundle.putString(TITLE, title);
         bundle.putString(CONTENT, content);
+        dialog.setArguments(bundle);
+        return dialog;
+    }
+
+    public static NoticeDialog newInstance(String title, String content, String confirm, Notifier notifier) {
+        NoticeDialog dialog = new NoticeDialog();
+        dialog.setNotifier(notifier);
+        Bundle bundle = new Bundle();
+        bundle.putString(TITLE, title);
+        bundle.putString(CONTENT, content);
+        bundle.putString(CONFIRM, confirm);
         dialog.setArguments(bundle);
         return dialog;
     }
