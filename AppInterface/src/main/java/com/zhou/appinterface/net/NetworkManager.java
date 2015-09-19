@@ -85,6 +85,7 @@ public class NetworkManager implements Resetable{
 
     @SuppressWarnings("unchecked")
     public <T> void request(Request request, @NonNull LoadCallback<T> loadCallback, Type type) {
+        LogKit.d("url",request.urlString());
         new AsyncTask<Request, Void, T>() {
             @Override
             protected T doInBackground(Request... params) {
